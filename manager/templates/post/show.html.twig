@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Symfony - Пост{% endblock %}
+
+{% block body %}
+    <h1>Пост</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Идентификатор</th>
+                <td>{{ post.id }}</td>
+            </tr>
+            <tr>
+                <th>Заголовок</th>
+                <td>{{ post.title }}</td>
+            </tr>
+            <tr>
+                <th>Текст</th>
+                <td>{{ post.text }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="mb-2">
+        <a href="{{ path('post_index') }}" class="btn btn-primary">назад к списку</a>
+
+        <a href="{{ path('post_edit', {'id': post.id}) }}" class="btn btn-primary">редактировать</a>
+    </div>
+
+    {{ include('post/_delete_form.html.twig') }}
+{% endblock %}

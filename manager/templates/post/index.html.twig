@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Symfony - Список постов{% endblock %}
+
+{% block body %}
+    <h1>Список постов</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Идентификтор</th>
+                <th>Заголовок</th>
+                <th>Текст</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.text }}</td>
+                <td>
+                    <a href="{{ path('post_show', {'id': post.id}) }}" class="btn btn-primary btn-sm">просмотреть</a>
+                    <a href="{{ path('post_edit', {'id': post.id}) }}" class="btn btn-primary btn-sm">редактировать</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">постов не найдено</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('post_new') }}" class="btn btn-primary">Добавить новый</a>
+{% endblock %}
