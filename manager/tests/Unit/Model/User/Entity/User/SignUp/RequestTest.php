@@ -12,15 +12,20 @@ class RequestTest extends TestCase
     public function testSuccess(): void
     {
         $user = new User(
-            $id = Id::next(),
-            $date = new \DateTimeImmutable(),
-            $email = new Email('test@app.test'),
-            $passwordHash = 'passwordHash',
+            id: $id = Id::next(),
+            date: $date = new \DateTimeImmutable(),
+            email: $email = new Email('test@app.test'),
+            hash: $hash = 'hash',
+            token: $token = 'token',
         );
+
+        self::assertTrue($user->isWait());
+        self::assertFalse($user->isActive());
 
         self::assertEquals($id, $user->getId());
         self::assertEquals($date, $user->getDate());
         self::assertEquals($email, $user->getEmail());
-        self::assertEquals($passwordHash, $user->getPasswordHash());
+        self::assertEquals($hash, $user->getPasswordHash());
+        self::assertEquals($token, $user->getConfirmToken());
     }
 }
