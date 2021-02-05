@@ -19,27 +19,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('home') }}">Главная</a>
                     </li>
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Посты
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{{ path('post_index') }}">Список постов</a>
-                                <a class="dropdown-item" href="{{ path('post_new') }}">Добавить пост</a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_logout') }}">Выход</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_login') }}">Вход</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_register') }}">Регистрация</a>
-                        </li>
-                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Посты
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Список постов</a>
+                            <a class="dropdown-item" href="#">Добавить пост</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
