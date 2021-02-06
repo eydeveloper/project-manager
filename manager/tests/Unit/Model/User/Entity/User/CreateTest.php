@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Tests\Unit\Model\User\Entity\User;
+
+use App\Model\User\Entity\User\Id;
+use App\Model\User\Entity\User\User;
+use PHPUnit\Framework\TestCase;
+
+class CreateTest extends TestCase
+{
+    public function testSuccess()
+    {
+        $user = new User(
+            $id = Id::next(),
+            $date = new \DateTimeImmutable()
+        );
+
+        self::assertTrue($user->isActive());
+
+        self::assertEquals($id, $user->getId());
+        self::assertEquals($date, $user->getDate());
+    }
+}
