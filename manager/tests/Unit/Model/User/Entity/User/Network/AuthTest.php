@@ -5,7 +5,6 @@ namespace App\Tests\Unit\Model\User\Entity\User\Network;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\Network;
 use App\Model\User\Entity\User\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
 class AuthTest extends TestCase

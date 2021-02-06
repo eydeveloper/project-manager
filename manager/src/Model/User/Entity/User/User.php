@@ -3,6 +3,7 @@
 namespace App\Model\User\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use JetBrains\PhpStorm\Pure;
 
 class User
 {
@@ -12,13 +13,14 @@ class User
 
     private Id $id;
     private \DateTimeImmutable $date;
-    private ?Email $email;
+    private ?Email $email = null;
     private ?string $passwordHash;
     private ?string $confirmToken;
+    private ?ResetToken $resetToken = null;
     private string $status;
     private ArrayCollection $networks;
 
-    public function __construct(Id $id, \DateTimeImmutable $date)
+    #[Pure] public function __construct(Id $id, \DateTimeImmutable $date)
     {
         $this->id = $id;
         $this->date = $date;
@@ -69,6 +71,19 @@ class User
         $this->networks->add(new Network($this, $network, $identity));
     }
 
+    public function requestPasswordReset(ResetToken $token, \DateTimeImmutable $date): void
+    {
+        if (!$this->email) {
+            throw new \DomainException('Email is not specified.');
+        }
+
+        if ($this->resetToken && !$this->resetToken->isExpiredTo($date)) {
+            throw new \DomainException('Resetting is already requested.');
+        }
+
+        $this->resetToken = $token;
+    }
+
     public function isNew(): bool
     {
         return $this->status === self::STATUS_NEW;
@@ -107,6 +122,11 @@ class User
     public function getConfirmToken(): ?string
     {
         return $this->confirmToken;
+    }
+
+    public function getResetToken(): ResetToken
+    {
+        return $this->resetToken;
     }
 
     public function getNetworks(): ArrayCollection

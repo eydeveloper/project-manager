@@ -15,8 +15,7 @@ class CreateTest extends TestCase
             $date = new \DateTimeImmutable()
         );
 
-        self::assertTrue($user->isActive());
-
+        self::assertTrue($user->isNew());
         self::assertEquals($id, $user->getId());
         self::assertEquals($date, $user->getDate());
     }
