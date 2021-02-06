@@ -5,7 +5,6 @@ namespace App\Tests\Unit\Model\User\Entity\User\Network;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\Network;
 use App\Model\User\Entity\User\User;
-use App\Tests\Builder\User\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
 class AuthTest extends TestCase
@@ -22,6 +21,7 @@ class AuthTest extends TestCase
         self::assertTrue($user->isActive());
         self::assertEquals($id, $user->getId());
         self::assertEquals($date, $user->getDate());
+        self::assertTrue($user->getRole()->isUser());
 
         self::assertCount(1, $networks = $user->getNetworks());
         self::assertInstanceOf(Network::class, $first = $networks->first());
