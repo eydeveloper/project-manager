@@ -13,8 +13,8 @@ class ConfirmTest extends TestCase
 
         $user->confirmSignUp();
 
-        self::assertTrue($user->isActive());
-        self::assertFalse($user->isWait());
+        self::assertTrue($user->getStatus()->isActive());
+        self::assertFalse($user->getStatus()->isWait());
         self::assertNull($user->getConfirmToken());
     }
 

@@ -19,13 +19,13 @@ class RequestTest extends TestCase
             $token = 'token'
         );
 
-        self::assertTrue($user->isWait());
-        self::assertFalse($user->isActive());
         self::assertEquals($id, $user->getId());
         self::assertEquals($date, $user->getDate());
         self::assertEquals($email, $user->getEmail());
         self::assertEquals($hash, $user->getPasswordHash());
         self::assertEquals($token, $user->getConfirmToken());
+        self::assertTrue($user->getStatus()->isWait());
+        self::assertFalse($user->getStatus()->isActive());
         self::assertTrue($user->getRole()->isUser());
     }
 }

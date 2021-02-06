@@ -7,17 +7,13 @@ use JetBrains\PhpStorm\Pure;
 
 class User
 {
-    private const STATUS_NEW = 'new';
-    private const STATUS_WAIT = 'wait';
-    private const STATUS_ACTIVE = 'active';
-
     private Id $id;
     private \DateTimeImmutable $date;
     private ?Email $email = null;
     private ?string $passwordHash;
     private ?string $confirmToken;
     private ?ResetToken $resetToken = null;
-    private string $status;
+    private Status $status;
     private Role $role;
     private ArrayCollection $networks;
 
@@ -29,24 +25,24 @@ class User
         $this->networks = new ArrayCollection();
     }
 
-    #[Pure] public static function signUpByEmail(Id $id, \DateTimeImmutable $date, Email $email, string $hash, string $token): self
+    public static function signUpByEmail(Id $id, \DateTimeImmutable $date, Email $email, string $hash, string $token): self
     {
         $user = new self($id, $date);
         $user->email = $email;
         $user->passwordHash = $hash;
         $user->confirmToken = $token;
-        $user->status = self::STATUS_WAIT;
+        $user->status = Status::wait();
 
         return $user;
     }
 
     public function confirmSignUp(): void
     {
-        if (!$this->isWait()) {
+        if (!$this->getStatus()->isWait()) {
             throw new \DomainException('User is already confirmed.');
         }
 
-        $this->status = self::STATUS_ACTIVE;
+        $this->status = Status::active();
         $this->confirmToken = null;
     }
 
@@ -54,7 +50,7 @@ class User
     {
         $user = new self($id, $date);
         $user->attachNetwork($network, $identity);
-        $user->status = self::STATUS_ACTIVE;
+        $user->status = Status::active();
 
         return $user;
     }
@@ -72,7 +68,7 @@ class User
 
     public function requestPasswordReset(ResetToken $token, \DateTimeImmutable $date): void
     {
-        if (!$this->isActive()) {
+        if (!$this->getStatus()->isActive()) {
             throw new \DomainException('User is not active.');
         }
 
@@ -110,21 +106,6 @@ class User
         $this->role = $role;
     }
 
-    public function isNew(): bool
-    {
-        return $this->status === self::STATUS_NEW;
-    }
-
-    public function isWait(): bool
-    {
-        return $this->status === self::STATUS_WAIT;
-    }
-
-    public function isActive(): bool
-    {
-        return $this->status === self::STATUS_ACTIVE;
-    }
-
     public function getId(): Id
     {
         return $this->id;
@@ -153,6 +134,11 @@ class User
     public function getResetToken(): ?ResetToken
     {
         return $this->resetToken;
+    }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
     }
 
     public function getRole(): Role

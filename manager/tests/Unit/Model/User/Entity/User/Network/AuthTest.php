@@ -18,7 +18,7 @@ class AuthTest extends TestCase
             $identity = '0000001'
         );
 
-        self::assertTrue($user->isActive());
+        self::assertTrue($user->getStatus()->isActive());
         self::assertEquals($id, $user->getId());
         self::assertEquals($date, $user->getDate());
         self::assertTrue($user->getRole()->isUser());
