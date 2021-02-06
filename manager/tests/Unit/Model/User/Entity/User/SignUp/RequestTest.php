@@ -5,27 +5,23 @@ namespace App\Tests\Unit\Model\User\Entity\User\SignUp;
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
+use App\Tests\Builder\User\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = new User(
-            $id = Id::next(),
-            $date = new \DateTimeImmutable()
-        );
+        $user = (new UserBuilder())->build();
 
         $user->signUpByEmail(
-            $email = new Email('test@app.test'),
+            $email = new Email('mail@test.app'),
             $hash = 'hash',
-            $token = 'token',
+            $token = 'token'
         );
 
         self::assertTrue($user->isWait());
         self::assertFalse($user->isActive());
-        self::assertEquals($id, $user->getId());
-        self::assertEquals($date, $user->getDate());
         self::assertEquals($email, $user->getEmail());
         self::assertEquals($hash, $user->getPasswordHash());
         self::assertEquals($token, $user->getConfirmToken());
@@ -33,10 +29,7 @@ class RequestTest extends TestCase
 
     public function testAlready(): void
     {
-        $user = new User(
-            $id = Id::next(),
-            $date = new \DateTimeImmutable()
-        );
+        $user = (new UserBuilder())->build();
 
         $user->signUpByEmail(
             $email = new Email('test@app.test'),

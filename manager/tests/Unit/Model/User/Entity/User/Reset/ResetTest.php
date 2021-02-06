@@ -6,6 +6,7 @@ use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\ResetToken;
 use App\Model\User\Entity\User\User;
+use App\Tests\Builder\User\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
 class ResetTest extends TestCase
@@ -15,7 +16,7 @@ class ResetTest extends TestCase
         $now = new \DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
 
-        $user = $this->buildSignedUpByEmailUser();
+        $user = (new UserBuilder())->viaEmail()->build();
 
         $user->requestPasswordReset($token, $now);
 
@@ -32,7 +33,7 @@ class ResetTest extends TestCase
         $now = new \DateTimeImmutable();
         $token = new ResetToken('token', $now);
 
-        $user = $this->buildSignedUpByEmailUser();
+        $user = (new UserBuilder())->viaEmail()->build();
 
         $user->requestPasswordReset($token, $now);
 
@@ -44,30 +45,9 @@ class ResetTest extends TestCase
     {
         $now = new \DateTimeImmutable();
 
-        $user = $this->buildSignedUpByEmailUser();
+        $user = (new UserBuilder())->viaEmail()->build();
 
         $this->expectExceptionMessage('Resetting is not requested.');
         $user->passwordReset($now, 'hash');
-    }
-
-    private function buildSignedUpByEmailUser(): User
-    {
-        $user = $this->buildUser();
-
-        $user->signUpByEmail(
-            new Email('test@app.test'),
-            'hash',
-            'token'
-        );
-
-        return $user;
-    }
-
-    private function buildUser(): User
-    {
-        return new User(
-            Id::next(),
-            new \DateTimeImmutable()
-        );
     }
 }
