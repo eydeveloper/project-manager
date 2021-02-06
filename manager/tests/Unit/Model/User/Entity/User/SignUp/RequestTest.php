@@ -38,7 +38,6 @@ class RequestTest extends TestCase
         );
 
         $this->expectExceptionMessage('User is already signed up.');
-
         $user->signUpByEmail($email, $hash, $token);
     }
 }

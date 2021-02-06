@@ -36,7 +36,6 @@ class AuthTest extends TestCase
         );
 
         $this->expectExceptionMessage('User is already signed up.');
-
         $user->signUpByNetwork($network, $identity);
     }
 }

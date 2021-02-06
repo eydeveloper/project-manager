@@ -14,6 +14,7 @@ class UserBuilder
     private ?Email $email = null;
     private ?string $hash;
     private ?string $token;
+    private bool $confirmed = false;
 
     private ?string $network = null;
     private ?string $identity;
@@ -30,6 +31,14 @@ class UserBuilder
         $clone->email = $email ?? new Email('mail@app.test');
         $clone->hash = $hash ?? 'hash';
         $clone->token = $token ?? 'token';
+
+        return $clone;
+    }
+
+    public function confirmed(): self
+    {
+        $clone = clone $this;
+        $clone->confirmed = true;
 
         return $clone;
     }
@@ -56,6 +65,10 @@ class UserBuilder
                 $this->hash,
                 $this->token
             );
+
+            if ($this->confirmed) {
+                $user->confirmSignUp();
+            }
         }
 
         if ($this->network) {

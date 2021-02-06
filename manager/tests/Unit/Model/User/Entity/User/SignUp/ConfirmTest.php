@@ -27,7 +27,6 @@ class ConfirmTest extends TestCase
         $user->confirmSignUp();
 
         $this->expectExceptionMessage('User is already confirmed.');
-
         $user->confirmSignUp();
     }
 
