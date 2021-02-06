@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\User\UseCase\Reset;
+namespace App\Model\User\UseCase\Reset\Request;
 
 use App\Model\User\Entity\User\Email;
 
