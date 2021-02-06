@@ -12,30 +12,20 @@ class AuthTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = (new UserBuilder())->build();
-
-        $user->signUpByNetwork(
+        $user = User::signUpByNetwork(
+            $id = Id::next(),
+            $date = new \DateTimeImmutable(),
             $network = 'vk',
             $identity = '0000001'
         );
 
         self::assertTrue($user->isActive());
+        self::assertEquals($id, $user->getId());
+        self::assertEquals($date, $user->getDate());
+
         self::assertCount(1, $networks = $user->getNetworks());
         self::assertInstanceOf(Network::class, $first = $networks->first());
         self::assertEquals($network, $first->getNetwork());
         self::assertEquals($identity, $first->getIdentity());
-    }
-
-    public function testAlready()
-    {
-        $user = (new UserBuilder())->build();
-
-        $user->signUpByNetwork(
-            $network = 'vk',
-            $identity = '0000001'
-        );
-
-        $this->expectExceptionMessage('User is already signed up.');
-        $user->signUpByNetwork($network, $identity);
     }
 }

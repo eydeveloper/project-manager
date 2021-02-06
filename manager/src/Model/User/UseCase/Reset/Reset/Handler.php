@@ -12,11 +12,7 @@ class Handler
     private PasswordHasher $hasher;
     private Flusher $flusher;
 
-    public function __construct(
-        UserRepository $users,
-        PasswordHasher $hasher,
-        Flusher $flusher,
-    )
+    public function __construct(UserRepository $users, PasswordHasher $hasher, Flusher $flusher)
     {
         $this->users = $users;
         $this->hasher = $hasher;

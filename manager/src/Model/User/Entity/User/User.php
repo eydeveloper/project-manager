@@ -20,24 +20,22 @@ class User
     private string $status;
     private ArrayCollection $networks;
 
-    #[Pure] public function __construct(Id $id, \DateTimeImmutable $date)
+    #[Pure] private function __construct(Id $id, \DateTimeImmutable $date)
     {
         $this->id = $id;
         $this->date = $date;
-        $this->status = self::STATUS_NEW;
         $this->networks = new ArrayCollection();
     }
 
-    public function signUpByEmail(Email $email, string $hash, string $token): void
+    #[Pure] public static function signUpByEmail(Id $id, \DateTimeImmutable $date, Email $email, string $hash, string $token): self
     {
-        if (!$this->isNew()) {
-            throw new \DomainException('User is already signed up.');
-        }
+        $user = new self($id, $date);
+        $user->email = $email;
+        $user->passwordHash = $hash;
+        $user->confirmToken = $token;
+        $user->status = self::STATUS_WAIT;
 
-        $this->email = $email;
-        $this->passwordHash = $hash;
-        $this->confirmToken = $token;
-        $this->status = self::STATUS_WAIT;
+        return $user;
     }
 
     public function confirmSignUp(): void
@@ -50,14 +48,13 @@ class User
         $this->confirmToken = null;
     }
 
-    public function signUpByNetwork(string $network, string $identity): void
+    public static function signUpByNetwork(Id $id, \DateTimeImmutable $date, string $network, string $identity): self
     {
-        if (!$this->isNew()) {
-            throw new \DomainException('User is already signed up.');
-        }
+        $user = new self($id, $date);
+        $user->attachNetwork($network, $identity);
+        $user->status = self::STATUS_ACTIVE;
 
-        $this->attachNetwork($network, $identity);
-        $this->status = self::STATUS_ACTIVE;
+        return $user;
     }
 
     public function attachNetwork(string $network, string $identity): void

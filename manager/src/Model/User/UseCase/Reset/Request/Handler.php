@@ -14,12 +14,7 @@ class Handler
     private ResetTokenSender $sender;
     private Flusher $flusher;
 
-    public function __construct(
-        UserRepository $users,
-        ResetTokenizer $tokenizer,
-        ResetTokenSender $sender,
-        Flusher $flusher,
-    )
+    public function __construct(UserRepository $users, ResetTokenizer $tokenizer, ResetTokenSender $sender, Flusher $flusher)
     {
         $this->users = $users;
         $this->tokenizer = $tokenizer;
