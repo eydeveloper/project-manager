@@ -3,21 +3,57 @@
 namespace App\Model\User\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use JetBrains\PhpStorm\Pure;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="user_users", uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"email"}),
+ *     @ORM\UniqueConstraint(columns={"reset_token_token"})
+ * })
+ */
 class User
 {
+    /**
+     * @ORM\Column(type="user_user_id")
+     * @ORM\Id
+     */
     private Id $id;
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
     private \DateTimeImmutable $date;
+    /**
+     * @ORM\Column(type="user_user_email", nullable=true)
+     */
     private ?Email $email = null;
+    /**
+     * @ORM\Column(type="string", nullable=true, name="password_hash")
+     */
     private ?string $passwordHash;
+    /**
+     * @ORM\Column(type="string", nullable=true, name="confirm_token")
+     */
     private ?string $confirmToken;
+    /**
+     * @ORM\Embedded(class="ResetToken", columnPrefix="reset_token_")
+     */
     private ?ResetToken $resetToken = null;
+    /**
+     * @ORM\Column(type="user_user_status")
+     */
     private Status $status;
+    /**
+     * @ORM\Column(type="user_user_role")
+     */
     private Role $role;
+    /**
+     * @ORM\OneToMany(targetEntity="Network", mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     */
     private ArrayCollection $networks;
 
-    #[Pure] private function __construct(Id $id, \DateTimeImmutable $date)
+    private function __construct(Id $id, \DateTimeImmutable $date)
     {
         $this->id = $id;
         $this->date = $date;
@@ -149,5 +185,15 @@ class User
     public function getNetworks(): ArrayCollection
     {
         return $this->networks;
+    }
+
+    /**
+     * @ORM\PostLoad
+     */
+    public function checkEmbeds(): void
+    {
+        if ($this->resetToken->isEmpty()) {
+            $this->resetToken = null;
+        }
     }
 }
