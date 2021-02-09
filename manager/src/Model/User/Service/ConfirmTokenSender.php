@@ -4,7 +4,9 @@ namespace App\Model\User\Service;
 
 use App\Model\User\Entity\User\Email;
 
-interface ConfirmTokenSender
+class ConfirmTokenSender
 {
-    public function send(Email $email, string $token);
+    public function send(Email $email, string $token): void
+    {
+    }
 }

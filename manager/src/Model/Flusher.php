@@ -2,7 +2,20 @@
 
 namespace App\Model;
 
-interface Flusher
+use Doctrine\ORM\EntityManagerInterface;
+
+class Flusher
 {
-    public function flush(): void;
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager
+    )
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    public function flush(): void
+    {
+        $this->entityManager->flush();
+    }
 }
