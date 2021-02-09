@@ -2,9 +2,10 @@
 
 namespace App\Model\User\UseCase\Reset\Request;
 
-use App\Model\User\Entity\User\Email;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Command
 {
-    public Email $email;
+    #[Assert\NotBlank, Assert\Email]
+    public string $email;
 }

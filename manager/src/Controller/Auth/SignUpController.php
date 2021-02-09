@@ -19,7 +19,7 @@ class SignUpController extends AbstractController
     public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
     {
         $this->logger = $logger;
-        $this->translator= $translator;
+        $this->translator = $translator;
     }
 
     #[Route('/signup', name: 'auth.signup')]
@@ -44,5 +44,21 @@ class SignUpController extends AbstractController
         return $this->render('app/auth/signup.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/signup/{token}', name: 'auth.signup.confirm')]
+    public function confirm(string $token, SignUp\Confirm\Handler $handler): RedirectResponse
+    {
+        $command = new SignUp\Confirm\Command($token);
+
+        try {
+            $handler->handle($command);
+            $this->addFlash('success', 'Email is successfully confirmed.');
+            return $this->redirectToRoute('home');
+        } catch (\DomainException $exception) {
+            $this->addFlash('error', $this->translator->trans($exception->getMessage(), domain: 'exceptions'));
+            $this->logger->error($exception->getMessage(), ['exception' => $exception]);
+            return $this->redirectToRoute('home');
+        }
     }
 }

@@ -19,7 +19,13 @@ class Handler
     private ConfirmTokenSender $sender;
     private Flusher $flusher;
 
-    public function __construct(UserRepository $users, PasswordHasher $passwordHasher, SignUpConfirmTokenizer $tokenizer, ConfirmTokenSender $sender, Flusher $flusher)
+    public function __construct(
+        UserRepository $users,
+        PasswordHasher $passwordHasher,
+        SignUpConfirmTokenizer $tokenizer,
+        ConfirmTokenSender $sender,
+        Flusher $flusher
+    )
     {
         $this->users = $users;
         $this->passwordHasher = $passwordHasher;

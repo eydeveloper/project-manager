@@ -46,7 +46,7 @@ class UserRepository
     public function getByEmail(Email $email): User
     {
         /** @var $user User */
-        if (!$user = $this->repository->findBy(['email' => $email->getValue()])) {
+        if (!$user = $this->repository->findOneBy(['email' => $email->getValue()])) {
             throw new EntityNotFoundException('User is not found.');
         }
 

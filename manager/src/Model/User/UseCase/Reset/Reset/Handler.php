@@ -19,7 +19,7 @@ class Handler
         $this->flusher = $flusher;
     }
 
-    public function handler(Command $command): void
+    public function handle(Command $command): void
     {
         if (!$user = $this->users->findByResetToken($command->token)) {
             throw new \DomainException('Incorrect or confirmed token.');
