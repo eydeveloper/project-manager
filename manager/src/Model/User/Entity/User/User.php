@@ -51,7 +51,7 @@ class User
     /**
      * @ORM\OneToMany(targetEntity="Network", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
-    private ArrayCollection $networks;
+    private mixed $networks;
 
     private function __construct(Id $id, \DateTimeImmutable $date)
     {

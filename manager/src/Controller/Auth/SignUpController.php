@@ -9,14 +9,17 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SignUpController extends AbstractController
 {
     private LoggerInterface $logger;
+    private TranslatorInterface $translator;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
     {
         $this->logger = $logger;
+        $this->translator= $translator;
     }
 
     #[Route('/signup', name: 'auth.signup')]
@@ -33,7 +36,7 @@ class SignUpController extends AbstractController
                 $this->addFlash('success', 'Check your email.');
                 return $this->redirectToRoute('home');
             } catch (\DomainException $exception) {
-                $this->addFlash('error', $exception->getMessage());
+                $this->addFlash('error', $this->translator->trans($exception->getMessage(), domain: 'exceptions'));
                 $this->logger->error($exception->getMessage(), ['exception' => $exception]);
             }
         }
