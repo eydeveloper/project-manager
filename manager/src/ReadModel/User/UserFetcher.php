@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\ReadModel\User;
 
 use Doctrine\DBAL\Connection;
@@ -9,11 +11,6 @@ class UserFetcher
 {
     private Connection $connection;
 
-    /**
-     * UserFetcher constructor.
-     *
-     * @param Connection $connection
-     */
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
@@ -21,17 +18,19 @@ class UserFetcher
 
     /**
      * @param string $token
-     * @return mixed
+     * @return bool
      * @throws Exception
      */
     public function existsByResetToken(string $token): bool
     {
-        return $this->connection->createQueryBuilder()
+        $user = $this->connection->createQueryBuilder()
             ->select('COUNT(*)')
             ->from('user_users')
             ->where('reset_token_token = :token')
             ->setParameter(':token', $token)
             ->execute()->fetchOne();
+
+        return (bool)$user;
     }
 
     /**

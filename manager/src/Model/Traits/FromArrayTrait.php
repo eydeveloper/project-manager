@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Model\Traits;
 
 use App\ReadModel\User\AuthView;

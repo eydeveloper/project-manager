@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security;
 
 use App\Model\User\Entity\User\Status;
-use App\Model\User\Entity\User\User;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserIdentity implements UserInterface
+class UserIdentity implements UserInterface, EquatableInterface
 {
     private string $id;
     private string $username;
@@ -44,7 +46,7 @@ class UserIdentity implements UserInterface
         return $this->password;
     }
 
-    public function isActive(): string
+    public function isActive(): bool
     {
         return $this->status === Status::active()->getName();
     }
@@ -62,5 +64,19 @@ class UserIdentity implements UserInterface
     public function eraseCredentials(): void
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function isEqualTo(UserInterface $user): bool
+    {
+        if (!$user instanceof self) {
+            return false;
+        }
+
+        return
+            $this->id === $user->id &&
+            $this->username === $user->username &&
+            $this->password === $user->password &&
+            $this->status === $user->status &&
+            $this->role === $user->role;
     }
 }
