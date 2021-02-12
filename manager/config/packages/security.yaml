@@ -4,12 +4,12 @@ security:
             algorithm: auto
 
     providers:
-        app_user_provider:
-            entity:
-                class: App\Model\User\Entity\User\User
-                property: email
-#        fetcher:
-#            id: App\Security\UserProvider
+#        app_user_provider:
+#            entity:
+#                class: App\Model\User\Entity\User\User
+#                property: email
+        fetcher:
+            id: App\Security\UserProvider
 
     firewalls:
         dev:
@@ -18,18 +18,18 @@ security:
         main:
             anonymous: true
             lazy: true
-            form_login: true
+
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
+            user_checker: App\Security\UserChecker
+            form_login: true
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
                 path: /
             logout:
                 path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
