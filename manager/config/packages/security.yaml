@@ -8,6 +8,8 @@ security:
             entity:
                 class: App\Model\User\Entity\User\User
                 property: email
+#        fetcher:
+#            id: App\Security\UserProvider
 
     firewalls:
         dev:
