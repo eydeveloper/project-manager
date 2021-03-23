@@ -31,6 +31,9 @@ manager-wait-db:
 manager-migrations:
 	docker-compose run --rm manager-php-cli bin/console doctrine:migrations:migrate --no-interaction
 
+manager-fixtures:
+	docker-compose run --rm manager-php-cli bin/console doctrine:fixtures:load --no-interaction
+
 manager-test:
 	docker-compose run --rm manager-php-cli bin/phpunit
 

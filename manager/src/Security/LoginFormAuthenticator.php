@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use App\Model\User\Entity\User\User;
 use App\Model\User\Service\PasswordHasher;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\ArrayShape;
@@ -73,7 +72,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider): object
+    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
 
@@ -81,10 +80,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException('');
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+        $user = $userProvider->loadUserByUsername($credentials['email']);
 
         if (!$user) {
-            // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
