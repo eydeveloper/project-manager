@@ -12,6 +12,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class AuthController extends AbstractController
 {
     /**
+     * Авторизация пользователя.
+     *
      * @Route("/login", name="app_login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
@@ -31,6 +33,8 @@ class AuthController extends AbstractController
     }
 
     /**
+     * Деавторизация пользователя.
+     *
      * @Route("/logout", name="app_logout")
      */
     public function logout(): void

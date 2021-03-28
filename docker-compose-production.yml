@@ -1,14 +1,36 @@
 version: '3'
 services:
-  manager-nginx:
-    image: ${REGISTRY_ADDRESS}/manager-nginx:${IMAGE_TAG}
-    restart: always
-    depends_on:
-      - manager-php-fpm
-    ports:
-      - "80:80"
-  manager-php-fpm:
-    image: ${REGISTRY_ADDRESS}/manager-php-fpm:${IMAGE_TAG}
-    restart: always
-  manager-php-cli:
-    image: ${REGISTRY_ADDRESS}/manager-php-cli:${IMAGE_TAG}
+    manager-nginx:
+        image: ${REGISTRY_ADDRESS}/manager-nginx:${IMAGE_TAG}
+        restart: always
+        depends_on:
+            - manager-php-fpm
+        ports:
+            - "80:80"
+    manager-php-fpm:
+        image: ${REGISTRY_ADDRESS}/manager-php-fpm:${IMAGE_TAG}
+        restart: always
+        environment:
+            APP_SECRET: ${MANAGER_APP_SECRET}
+            DATABASE_URL: pgsql://app:${MANAGER_DB_PASSWORD}@manager-postgres:5432/app
+            MAILER_URL: null://localhost
+            OAUTH_FACEBOOK_SECRET: ${MANAGER_OAUTH_FACEBOOK_SECRET}
+    manager-php-cli:
+        image: ${REGISTRY_ADDRESS}/manager-php-cli:${IMAGE_TAG}
+        environment:
+            APP_SECRET: ${MANAGER_APP_SECRET}
+            DATABASE_URL: pgsql://app:${MANAGER_DB_PASSWORD}@manager-postgres:5432/app
+            MAILER_URL: null://localhost
+            OAUTH_FACEBOOK_SECRET: ${MANAGER_OAUTH_FACEBOOK_SECRET}
+    manager-postgres:
+        image: ${REGISTRY_ADDRESS}/manager-php-cli:${IMAGE_TAG}
+        restart: always
+        volumes:
+            - manager-postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: app
+
+volumes:
+    manager-postgres:

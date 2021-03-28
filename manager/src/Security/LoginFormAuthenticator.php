@@ -45,12 +45,25 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $this->hasher = $hasher;
     }
 
+    /**
+     * Метод принимает решение, следует ли использовать этот аутентификатор.
+     * Если вернет `false`, то этот аутентификатор будет пропущен.
+     *
+     * @param Request $request
+     * @return bool
+     */
     public function supports(Request $request): bool
     {
         return self::LOGIN_ROUTE === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
+    /**
+     * Метод возвращает учетные данные из запроса.
+     *
+     * @param Request $request
+     * @return array
+     */
     #[ArrayShape([
         'email' => 'string',
         'password' => 'string',
@@ -72,7 +85,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
+    /**
+     * Метод возвращает объекта пользователя из UserProvider.
+     * Вызывается при получении учетных данных.
+     *
+     * @param mixed $credentials
+     * @param UserProviderInterface $userProvider
+     * @return UserInterface
+     */
+    public function getUser(mixed $credentials, UserProviderInterface $userProvider): UserInterface
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
 
@@ -89,11 +110,28 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $user;
     }
 
-    public function checkCredentials($credentials, UserInterface $user): bool
+    /**
+     * Метод выполняет проверку корректности учетных данных пользователя.
+     * Вызывается при получении объекта пользователя из UserProvider.
+     *
+     * @param mixed $credentials
+     * @param UserInterface $user
+     * @return bool
+     */
+    public function checkCredentials(mixed $credentials, UserInterface $user): bool
     {
         return $this->hasher->validate($credentials['password'], $user->getPassword());
     }
 
+    /**
+     * Метод выполняет редирект на главную страницу или страницу, открытую до авторизации.
+     * Вызывается в случае успешной авторизации.
+     *
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $providerKey
+     * @return RedirectResponse
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): RedirectResponse
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
@@ -103,6 +141,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('home'));
     }
 
+    /**
+     * Метод возвращает ссылку на страницу авторизации.
+     *
+     * @return string
+     */
     protected function getLoginUrl(): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);

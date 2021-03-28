@@ -22,6 +22,13 @@ class ResetController extends AbstractController
         $this->logger = $logger;
     }
 
+    /**
+     * Запрос на сброс пароля пользователя.
+     *
+     * @param Request $request
+     * @param Reset\Request\Handler $handler
+     * @return RedirectResponse|Response
+     */
     #[Route('/reset', name: 'auth.reset')]
     public function request(Request $request, Reset\Request\Handler $handler): RedirectResponse|Response
     {
@@ -46,6 +53,16 @@ class ResetController extends AbstractController
         ]);
     }
 
+    /**
+     * Сброс пароля пользователя.
+     *
+     * @param string $token
+     * @param Request $request
+     * @param Reset\Reset\Handler $handler
+     * @param UserFetcher $users
+     * @return RedirectResponse|Response
+     * @throws \Doctrine\DBAL\Exception
+     */
     #[Route('/reset/{token}', name: 'auth.reset.reset')]
     public function reset(string $token, Request $request, Reset\Reset\Handler $handler, UserFetcher $users): RedirectResponse|Response
     {

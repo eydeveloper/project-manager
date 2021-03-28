@@ -24,6 +24,13 @@ class SignUpController extends AbstractController
         $this->translator = $translator;
     }
 
+    /**
+     * Запрос на регистрацию пользователя.
+     *
+     * @param Request $request
+     * @param SignUp\Request\Handler $handler
+     * @return RedirectResponse|Response
+     */
     #[Route('/signup', name: 'auth.signup')]
     public function request(Request $request, SignUp\Request\Handler $handler): RedirectResponse|Response
     {
@@ -48,6 +55,13 @@ class SignUpController extends AbstractController
         ]);
     }
 
+    /**
+     * Подтверждение регистрации пользователя.
+     *
+     * @param string $token
+     * @param SignUp\Confirm\Handler $handler
+     * @return RedirectResponse
+     */
     #[Route('/signup/{token}', name: 'auth.signup.confirm')]
     public function confirm(string $token, SignUp\Confirm\Handler $handler): RedirectResponse
     {

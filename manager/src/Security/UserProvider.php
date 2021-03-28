@@ -23,20 +23,20 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername(string $username): UserIdentity
     {
-        return self::identityByUser(
-            $this->loadUser($username)
-        );
+        $user = $this->loadUser($username);
+
+        return self::identityByUser($user, $username);
     }
 
-    public function refreshUser(UserInterface $user): UserInterface|UserIdentity
+    public function refreshUser(UserInterface $identity): UserInterface|UserIdentity
     {
-        if (!$user instanceof UserIdentity) {
-            throw new UnsupportedUserException('Invalid user class ' . get_class($user));
+        if (!$identity instanceof UserIdentity) {
+            throw new UnsupportedUserException('Invalid user class ' . get_class($identity));
         }
 
-        return self::identityByUser(
-            $this->loadUser($user->getUsername())
-        );
+        $user = $this->loadUser($identity->getUsername());
+
+        return self::identityByUser($user, $identity->getUsername());
     }
 
     public function supportsClass(string $class): bool
@@ -47,24 +47,29 @@ class UserProvider implements UserProviderInterface
     /**
      * @param string $username
      * @return AuthView
-     * @throws \Doctrine\DBAL\Exception
      */
     public function loadUser(string $username): AuthView
     {
-        if (!$user = $this->users->findForAuth($username)) {
-            throw new UsernameNotFoundException('User is not found.');
+        $chunks = explode(':', $username);
+
+        if (count($chunks) === 2 && $user = $this->users->findForAuthByNetwork($chunks[0], $chunks[1])) {
+            return $user;
         }
 
-        return $user;
+        if ($user = $this->users->findForAuthByEmail($username)) {
+            return $user;
+        }
+
+        return throw new UsernameNotFoundException('');
     }
 
     #[Pure]
-    public static function identityByUser(AuthView $user): UserIdentity
+    public static function identityByUser(AuthView $user, string $username): UserIdentity
     {
         return new UserIdentity(
             $user->id,
-            $user->email,
-            $user->password_hash,
+            $username,
+            $user->password_hash ?: '',
             $user->status,
             $user->role
         );
