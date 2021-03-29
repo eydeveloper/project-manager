@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security\OAuth;
 
+use App\Model\User\UseCase\Network\Auth\Command;
 use App\Model\User\UseCase\Network\Auth\Handler;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -50,13 +52,18 @@ class FacebookAuthenticator extends SocialAuthenticator
 
     public function getUser(mixed $credentials, UserProviderInterface $userProvider): UserInterface
     {
-        $facebookUser = $this->getFacebookClient()->getUserFromToken($credentials);
+        $facebookUser = $this->getFacebookClient()->fetchUserFromToken($credentials);
 
         $network = 'facebook';
         $id = $facebookUser->getId();
         $username = $network . ':' . $id;
 
-        return $userProvider->loadUserByUsername($username);
+        try {
+            return $userProvider->loadUserByUsername($username);
+        } catch (UsernameNotFoundException) {
+            $this->handler->handle(new Command($network, $id));
+            return $userProvider->loadUserByUsername($username);
+        }
     }
 
     private function getFacebookClient(): FacebookClient|OAuth2ClientInterface

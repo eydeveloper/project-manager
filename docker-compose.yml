@@ -6,10 +6,13 @@ services:
             dockerfile: nginx.docker
         volumes:
             - ./manager:/app
+            - ./manager/docker/development/certbot/conf:/etc/letsencrypt
+            - ./manager/docker/development/certbot/www:/var/www/certbot
         depends_on:
             - manager-php-fpm
         ports:
             - "80:80"
+            - "443:443"
     manager-php-fpm:
         build:
             context: ./manager/docker/development
@@ -29,6 +32,11 @@ services:
         depends_on:
             - manager-postgres
             - mailer
+    manager-node:
+        image: node:14.16.0-alpine
+        volumes:
+            - ./manager:/app
+        working_dir: /app
     manager-postgres:
         image: postgres:13.1-alpine
         volumes:
@@ -43,7 +51,11 @@ services:
         image: mailhog/mailhog
         ports:
             - "8025:8025"
-
+    certbot:
+        image: certbot/certbot
+        volumes:
+            - ./manager/docker/development/certbot/conf:/etc/letsencrypt
+            - ./manager/docker/development/certbot/www:/var/www/certbot
 volumes:
     manager-postgres:
     composer:

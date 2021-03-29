@@ -20,10 +20,13 @@ docker-build:
 cli:
 	docker-compose run --rm manager-php-cli php bin/app.php
 
-manager-init: manager-composer-install manager-wait-db manager-migrations
+manager-init: manager-composer-install manager-assets-install manager-wait-db manager-migrations
 
 manager-composer-install:
 	docker-compose run --rm manager-php-cli composer install
+
+manager-assets-install:
+	docker-compose run --rm manager-node yarn install
 
 manager-wait-db:
 	until docker-compose exec -T manager-postgres pg_isready --timeout=0 --dbname=app ; do sleep 1 ; done
@@ -36,6 +39,9 @@ manager-fixtures:
 
 manager-test:
 	docker-compose run --rm manager-php-cli bin/phpunit
+
+certbot-init:
+	./certbot-init.sh
 
 build-production:
 	docker build --pull --file=manager/docker/production/nginx.docker --tag ${REGISTRY_ADDRESS}/manager-nginx:${IMAGE_TAG} manager

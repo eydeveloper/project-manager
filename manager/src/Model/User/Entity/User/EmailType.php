@@ -12,17 +12,30 @@ class EmailType extends StringType
 {
     public const NAME = 'user_user_email';
 
+    /**
+     * @param mixed $value
+     * @param AbstractPlatform $platform
+     * @return string|null
+     */
     #[Pure]
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         return $value instanceof Email ? $value->getValue() : $value;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?Email
+    /**
+     * @param mixed $value
+     * @param AbstractPlatform $platform
+     * @return Email|null
+     */
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?Email
     {
         return !empty($value) ? new Email($value) : null;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return self::NAME;
