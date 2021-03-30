@@ -18,8 +18,13 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@coreui/coreui": "^3.4.0",
         "@popperjs/core": "^2.9.1",
         "bootstrap": "^4.6.0",
-        "jquery": "^3.6.0"
+        "font-awesome": "^4.7.0",
+        "jquery": "^3.6.0",
+        "perfect-scrollbar": "^1.5.0",
+        "popper.js": "^1.16.1",
+        "simple-line-icons": "^2.5.5"
     }
 }
