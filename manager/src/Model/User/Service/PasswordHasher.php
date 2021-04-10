@@ -10,7 +10,7 @@ class PasswordHasher
     {
         $hash = password_hash($password, PASSWORD_ARGON2I);
         if ($hash === false) {
-            throw new \RuntimeException('Unable to generate hash.');
+            throw new \RuntimeException('Не удалось сгенерировать хеш.');
         }
 
         return $hash;

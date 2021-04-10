@@ -25,14 +25,14 @@ class ResetTokenSender
     {
         $message = (new TemplatedEmail())
             ->to($email->getValue())
-            ->subject('Password resetting')
+            ->subject('Восстановление пароля')
             ->htmlTemplate('mail/user/reset.html.twig')
             ->context(['token' => $token->getToken()]);
 
         try {
             $this->mailer->send($message);
         } catch (TransportExceptionInterface) {
-            throw new TransportException('Unable to send message.');
+            throw new TransportException('Не удалось отправить письмо.');
         }
     }
 }

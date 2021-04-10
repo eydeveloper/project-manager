@@ -24,14 +24,14 @@ class ConfirmTokenSender
     {
         $message = (new TemplatedEmail())
             ->to($email->getValue())
-            ->subject('Sign Up Confirmation')
+            ->subject('Подтверждение регистрации')
             ->htmlTemplate('mail/user/signup.html.twig')
             ->context(['token' => $token]);
 
         try {
             $this->mailer->send($message);
         } catch (TransportExceptionInterface) {
-            throw new TransportException('Unable to send message.');
+            throw new TransportException('Не удалось отправить письмо.');
         }
     }
 }
