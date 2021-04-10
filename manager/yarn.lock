@@ -832,10 +832,20 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@coreui/coreui@^3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@coreui/coreui/-/coreui-3.4.0.tgz#3e3627a1f48a00f6289204a23f71eaa6ea94e370"
-  integrity sha512-WqzockdWVkXUNmNwlqdu+AxM+9JoiWGe4rKaySu/dZme1NvVOn2ukjJlpTkssal8UKcSHyitzNixtkMCmUxE1A==
+"@coreui/coreui-plugin-npm-postinstall@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@coreui/coreui-plugin-npm-postinstall/-/coreui-plugin-npm-postinstall-1.0.2.tgz#6daeb2ec786580d9c0849b05bc3e8d0222d5c463"
+  integrity sha512-yeeoWp+bNS84nP1977Y8UCiQ9pssO+f4QuVj3i0/gYZFjjvOgxx0dnyWhtowD5sLYnCRMPlPpqyjwXze3SlkYg==
+
+"@coreui/coreui@^2.1.16":
+  version "2.1.16"
+  resolved "https://registry.yarnpkg.com/@coreui/coreui/-/coreui-2.1.16.tgz#93efb7d903bcd53092cc4bcc31ef8703de565457"
+  integrity sha512-1YOnQAlcX2bIgnaX3k9GKaN4lD+wKam7tdDfFj7/ZQTN1XG3dwDELHp4aagWQs78ix2CCO1LyeLrzGpsMcLW3Q==
+  dependencies:
+    "@coreui/coreui-plugin-npm-postinstall" "^1.0.2"
+    bootstrap "^4.3.1"
+    core-js "^3.3.4"
+    regenerator-runtime "^0.13.3"
 
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.2"
@@ -1461,7 +1471,7 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bootstrap@^4.6.0:
+bootstrap@^4.3.1, bootstrap@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.0.tgz#97b9f29ac98f98dfa43bf7468262d84392552fd7"
   integrity sha512-Io55IuQY3kydzHtbGvQya3H+KorS/M9rSNyfCGCg9WZ4pyT/lCxIlpJgG1GXW/PswzC84Tr2fBYi+7+jFVQQBw==
@@ -1812,6 +1822,11 @@ core-js@^3.0.0:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.9.1.tgz#cec8de593db8eb2a85ffb0dbdeb312cb6e5460ae"
   integrity sha512-gSjRvzkxQc1zjM/5paAmL4idJBFzuJoo+jDjF1tStYFMV2ERfD02HhahhCGXUyHxQRG4yFKVSdO6g62eoRMcDg==
+
+core-js@^3.3.4:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.10.0.tgz#9a020547c8b6879f929306949e31496bbe2ae9b3"
+  integrity sha512-MQx/7TLgmmDVamSyfE+O+5BHvG1aUGj/gHhLn1wVtm2B5u1eVIPvh7vkfjwWKNCjrTJB8+He99IntSQ1qP+vYQ==
 
 core-util-is@~1.0.0:
   version "1.0.2"
@@ -4402,7 +4417,7 @@ regenerate@^1.4.0:
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.4.2.tgz#b9346d8827e8f5a32f7ba29637d398b69014848a"
   integrity sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==
 
-regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.4:
+regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.3, regenerator-runtime@^0.13.4:
   version "0.13.7"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.7.tgz#cac2dacc8a1ea675feaabaeb8ae833898ae46f55"
   integrity sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew==
