@@ -34,6 +34,10 @@ services:
         factory: ['@App\Container\Model\User\Service\ResetTokenizerFactory', 'create']
         arguments: ['PT1H']
 
+    App\Widget\:
+        resource: '../src/Widget'
+        tags: ['twig.extension']
+
     Predis\Client:
         arguments:
             - '%env(REDIS_URL)%'

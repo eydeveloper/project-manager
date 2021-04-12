@@ -1,0 +1,5 @@
+{% if status == 'STATUS_ACTIVE' %}
+    <span class="badge badge-success">Подтвержден</span>
+{% elseif status == 'STATUS_WAIT' %}
+    <span class="badge badge-secondary">Не подтвержден</span>
+{% endif %}
