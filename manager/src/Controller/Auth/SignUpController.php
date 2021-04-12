@@ -59,13 +59,13 @@ class SignUpController extends AbstractController
      * Подтверждение регистрации пользователя.
      *
      * @param string $token
-     * @param SignUp\Confirm\Handler $handler
+     * @param SignUp\Confirm\ByToken\Handler $handler
      * @return RedirectResponse
      */
     #[Route('/signup/{token}', name: 'auth.signup.confirm')]
-    public function confirm(string $token, SignUp\Confirm\Handler $handler): RedirectResponse
+    public function confirm(string $token, SignUp\Confirm\ByToken\Handler $handler): RedirectResponse
     {
-        $command = new SignUp\Confirm\Command($token);
+        $command = new SignUp\Confirm\ByToken\Command($token);
 
         try {
             $handler->handle($command);
