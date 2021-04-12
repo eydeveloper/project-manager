@@ -28,7 +28,12 @@
                 <div class="dropdown-header text-center">
                     <strong>Аккаунт</strong>
                 </div>
-                <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fa fa-lock"></i> Выход</a>
+                <a class="dropdown-item" href="{{ path('profile') }}">
+                    <i class="fa fa-user"></i> Профиль
+                </a>
+                <a class="dropdown-item" href="{{ path('app_logout') }}">
+                    <i class="fa fa-lock"></i> Выход
+                </a>
             </div>
         </li>
     </ul>

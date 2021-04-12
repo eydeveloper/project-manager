@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ path('home') }}">Главная</a>
+        </li>
+        <li class="breadcrumb-item active">Профиль</li>
+    </ol>
+{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">Профиль</div>
+        <div class="card-body">
+            <table class="table table-bordered mb-0">
+                <tbody>
+                    <tr>
+                        <th>Идентификатор</th>
+                        <td>{{ user.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Дата регистрации</th>
+                        <td>{{ user.date }}</td>
+                    </tr>
+                    {% if (user.email) %}
+                        <tr>
+                            <th>Электронная почта</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <th>Роль</th>
+                        <td>{{ user.role }}</td>
+                    </tr>
+                    <tr>
+                        <th>Статус</th>
+                        <td>{{ user.status }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if (user.networks) %}
+        <div class="card">
+            <div class="card-header">Социальные сети</div>
+            <div class="card-body">
+                <table class="table table-bordered mb-0">
+                    <tbody>
+                        <tr>
+                            <th></th>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

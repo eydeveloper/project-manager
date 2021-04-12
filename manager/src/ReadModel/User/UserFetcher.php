@@ -127,4 +127,49 @@ class UserFetcher
 
         return ShortView::fromArray($user);
     }
+
+    /**
+     * Метод выполняет поиск пользователя для детальной страницы.
+     *
+     * @param string $id
+     * @return DetailView|null
+     * @throws Exception
+     */
+    public function findDetail(string $id): ?DetailView
+    {
+        $user = $this->connection->createQueryBuilder()
+            ->select([
+                'id',
+                'date',
+                'email',
+                'role',
+                'status',
+            ])
+            ->from('user_users')
+            ->where('id = :id')
+            ->setParameter('id', $id)
+            ->execute()
+            ->fetchAssociative();
+
+        /** @var $view DetailView */
+        if (!$view = DetailView::fromArray($user)) {
+            return null;
+        }
+
+        $networks = $this->connection->createQueryBuilder()
+            ->select(['network', 'identity'])
+            ->from('user_user_networks')
+            ->where('user_id = :id')
+            ->setParameter('id', $id)
+            ->execute()
+            ->fetchAllAssociative();
+
+        foreach ($networks as $network) {
+            if ($networkView = NetworkView::fromArray($network)) {
+                $view->networks[] = $networkView;
+            }
+        }
+
+        return $view;
+    }
 }
