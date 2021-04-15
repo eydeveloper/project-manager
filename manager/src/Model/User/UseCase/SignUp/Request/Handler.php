@@ -9,7 +9,7 @@ use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepository;
-use App\Model\User\Service\ConfirmTokenSender;
+use App\Model\User\Service\SignUpConfirmTokenSender;
 use App\Model\User\Service\PasswordHasher;
 use App\Model\User\Service\SignUpConfirmTokenizer;
 
@@ -18,14 +18,14 @@ class Handler
     private UserRepository $users;
     private PasswordHasher $passwordHasher;
     private SignUpConfirmTokenizer $tokenizer;
-    private ConfirmTokenSender $sender;
+    private SignUpConfirmTokenSender $sender;
     private Flusher $flusher;
 
     public function __construct(
         UserRepository $users,
         PasswordHasher $passwordHasher,
         SignUpConfirmTokenizer $tokenizer,
-        ConfirmTokenSender $sender,
+        SignUpConfirmTokenSender $sender,
         Flusher $flusher
     )
     {
