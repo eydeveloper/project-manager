@@ -18,39 +18,65 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     /**
+     * Идентификатор.
+     *
      * @ORM\Column(type="user_user_id")
      * @ORM\Id
      */
     private Id $id;
+
     /**
+     * Дата регистрации.
+     *
      * @ORM\Column(type="datetime_immutable")
      */
     private \DateTimeImmutable $date;
+
     /**
+     * Электронная почта.
+     *
      * @ORM\Column(type="user_user_email", nullable=true)
      */
     private ?Email $email = null;
+
     /**
+     * Хеш пароля.
+     *
      * @ORM\Column(type="string", nullable=true, name="password_hash")
      */
     private ?string $passwordHash;
+
     /**
+     * Токен подтверждения электронной почты.
+     *
      * @ORM\Column(type="string", nullable=true, name="confirm_token")
      */
     private ?string $confirmToken;
+
     /**
+     * Токен восстановления пароля.
+     *
      * @ORM\Embedded(class="ResetToken", columnPrefix="reset_token_")
      */
     private ?ResetToken $resetToken = null;
+
     /**
+     * Статус.
+     *
      * @ORM\Column(type="user_user_status")
      */
     private Status $status;
+
     /**
+     * Роль.
+     *
      * @ORM\Column(type="user_user_role")
      */
     private Role $role;
+
     /**
+     * Социальные сети.
+     *
      * @ORM\OneToMany(targetEntity="Network", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     private mixed $networks;
@@ -63,6 +89,16 @@ class User
         $this->networks = new ArrayCollection();
     }
 
+    /**
+     * Регистрация пользователя по электронной почте.
+     *
+     * @param Id $id
+     * @param \DateTimeImmutable $date
+     * @param Email $email
+     * @param string $hash
+     * @param string $token
+     * @return static
+     */
     public static function signUpByEmail(Id $id, \DateTimeImmutable $date, Email $email, string $hash, string $token): self
     {
         $user = new self($id, $date);
@@ -74,6 +110,9 @@ class User
         return $user;
     }
 
+    /**
+     * Подтверждение регистрации пользователя.
+     */
     public function confirmSignUp(): void
     {
         if (!$this->getStatus()->isWait()) {
@@ -84,6 +123,15 @@ class User
         $this->confirmToken = null;
     }
 
+    /**
+     * Регистрация пользователя по социальной сети.
+     *
+     * @param Id $id
+     * @param \DateTimeImmutable $date
+     * @param string $network
+     * @param string $identity
+     * @return static
+     */
     public static function signUpByNetwork(Id $id, \DateTimeImmutable $date, string $network, string $identity): self
     {
         $user = new self($id, $date);
@@ -93,6 +141,12 @@ class User
         return $user;
     }
 
+    /**
+     * Привязка социальной сети к аккаунту.
+     *
+     * @param string $network
+     * @param string $identity
+     */
     public function attachNetwork(string $network, string $identity): void
     {
         foreach ($this->networks as $existing) {
@@ -104,6 +158,12 @@ class User
         $this->networks->add(new Network($this, $network, $identity));
     }
 
+    /**
+     * Отправка запроса на восстановление пароля.
+     *
+     * @param ResetToken $token
+     * @param \DateTimeImmutable $date
+     */
     public function requestPasswordReset(ResetToken $token, \DateTimeImmutable $date): void
     {
         if (!$this->getStatus()->isActive()) {
@@ -121,6 +181,12 @@ class User
         $this->resetToken = $token;
     }
 
+    /**
+     * Восстановление пароля.
+     *
+     * @param \DateTimeImmutable $date
+     * @param string $hash
+     */
     public function passwordReset(\DateTimeImmutable $date, string $hash): void
     {
         if (!$this->resetToken) {
@@ -135,6 +201,11 @@ class User
         $this->resetToken = null;
     }
 
+    /**
+     * Изменение роли.
+     *
+     * @param Role $role
+     */
     public function changeRole(Role $role): void
     {
         if ($this->role->isEqual($role)) {
