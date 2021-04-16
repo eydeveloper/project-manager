@@ -10,10 +10,33 @@ class DetailView
 {
     use FromArrayTrait;
 
+    /**
+     * @var string|null
+     */
     public ?string $id = null;
+
+    /**
+     * @var string|null
+     */
     public ?string $date = null;
+
+    /**
+     * @var string|null
+     */
     public ?string $email = null;
+
+    /**
+     * @var string|null
+     */
     public ?string $role = null;
+
+    /**
+     * @var string|null
+     */
     public ?string $status = null;
-    public ?NetworkView $networks = null;
+
+    /**
+     * @var DetailView[]|null
+     */
+    public ?array $networks = null;
 }
