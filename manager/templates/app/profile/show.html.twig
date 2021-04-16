@@ -49,10 +49,12 @@
             <div class="card-body">
                 <table class="table table-bordered mb-0">
                     <tbody>
+                        {% for network in user.networks %}
                         <tr>
-                            <th></th>
-                            <td></td>
+                            <th>{{ network.network }}</th>
+                            <td>{{ network.identity }}</td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

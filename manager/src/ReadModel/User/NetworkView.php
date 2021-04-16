@@ -11,12 +11,12 @@ class NetworkView
     use FromArrayTrait;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $network;
+    public ?string $network = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public string $identity;
+    public ?string $identity = null;
 }
