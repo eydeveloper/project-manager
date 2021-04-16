@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(dev01.belfan.hb-dev.ru)
+domains=(symfony.hb-dev.ru)
 rsa_key_size=4096
 data_path="./manager/docker/development/certbot"
 email="yaschenko.e02@gmail.com" # Adding a valid address is strongly recommended
