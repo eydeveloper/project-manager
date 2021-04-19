@@ -34,7 +34,7 @@ class ConfirmTest extends TestCase
         $user->confirmEmailChanging('token');
     }
 
-    public function testInvalidToken()
+    public function testInvalidToken(): void
     {
         $user = (new UserBuilder())->viaEmail()->confirmed()->build();
 
