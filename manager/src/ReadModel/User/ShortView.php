@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ReadModel\User;
 
-use App\Model\Traits\FromArrayTrait;
+use App\Model\Trait\FromArrayTrait;
 
 class ShortView
 {

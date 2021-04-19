@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Traits;
+namespace App\Model\Trait;
 
 use App\ReadModel\User\AuthView;
 use JetBrains\PhpStorm\Pure;
