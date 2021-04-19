@@ -46,21 +46,23 @@
             </table>
         </div>
     </div>
-    {% if (user.networks) %}
-        <div class="card">
-            <div class="card-header">Социальные сети</div>
-            <div class="card-body">
-                <table class="table table-bordered mb-0">
+    <div class="card">
+        <div class="card-header">Социальные сети</div>
+        <div class="card-body">
+            {% if (user.networks) %}
+                <table class="table table-bordered">
                     <tbody>
                         {% for network in user.networks %}
-                        <tr>
-                            <th>{{ network.network }}</th>
-                            <td>{{ network.identity }}</td>
-                        </tr>
+                            <tr>
+                                <th>{{ network.network }}</th>
+                                <td>{{ network.identity }}</td>
+                            </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
+            {% else %}
+                <a href="{{ path('profile.oauth.facebook') }}" class="btn btn-facebook">Подключить Facebook</a>
+            {% endif %}
         </div>
-    {% endif %}
+    </div>
 {% endblock %}

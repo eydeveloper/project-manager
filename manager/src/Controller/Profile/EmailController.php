@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/profile/email')]
 class EmailController extends AbstractController
 {
     private LoggerInterface $logger;
@@ -28,7 +29,7 @@ class EmailController extends AbstractController
      * @param Email\Request\Handler $handler
      * @return RedirectResponse|Response
      */
-    #[Route('/profile/email', name: 'profile.email')]
+    #[Route('', name: 'profile.email')]
     public function request(Request $request, Email\Request\Handler $handler): RedirectResponse|Response
     {
         /** @var UserIdentity $user */
@@ -64,7 +65,7 @@ class EmailController extends AbstractController
      * @param Email\Confirm\Handler $handler
      * @return RedirectResponse
      */
-    #[Route('/profile/email/{token}', name: 'profile.email.confirm')]
+    #[Route('/{token}', name: 'profile.email.confirm')]
     public function confirm(string $token, Email\Confirm\Handler $handler): RedirectResponse
     {
         /** @var UserIdentity $user */

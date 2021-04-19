@@ -129,6 +129,35 @@ class UserFetcher
     }
 
     /**
+     * Метод выполняет поиск пользователя по токену подтверждения регистрации.
+     *
+     * @param string $token
+     * @return mixed|null
+     * @throws Exception
+     */
+    public function findBySignUpConfirmToken(string $token)
+    {
+        $user = $this->connection->createQueryBuilder()
+            ->select([
+                'id',
+                'email',
+                'role',
+                'status',
+            ])
+            ->from('user_users')
+            ->where('confirm_token = :token')
+            ->setParameter(':token', $token)
+            ->execute()
+            ->fetchAssociative();
+
+        if (!$user) {
+            return null;
+        }
+
+        return ShortView::fromArray($user);
+    }
+
+    /**
      * Метод выполняет поиск пользователя для детальной страницы.
      *
      * @param string $id
