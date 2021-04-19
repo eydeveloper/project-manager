@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\User\Entity\User;
 
+use App\Model\User\Exception\UserAlreadySameEmail;
+use App\Model\User\Exception\UserEmailChangingNotRequested;
+use App\Model\User\Exception\UserInvalidNewEmailToken;
+use App\Model\User\Exception\UserNotActiveException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -52,6 +56,20 @@ class User
      * @ORM\Column(type="string", nullable=true, name="confirm_token")
      */
     private ?string $confirmToken;
+
+    /**
+     * Новая электронная почта.
+     *
+     * @ORM\Column(type="user_user_email", nullable=true, name="new_email")
+     */
+    private ?Email $newEmail = null;
+
+    /**
+     * Токен изменения электронной почты.
+     *
+     * @ORM\Column(type="string", nullable=true, name="new_email_token")
+     */
+    private ?string $newEmailToken = null;
 
     /**
      * Токен восстановления пароля.
@@ -159,6 +177,46 @@ class User
     }
 
     /**
+     * Отправка запроса на смену электронной почты.
+     *
+     * @param Email $email
+     * @param string $token
+     */
+    public function requestEmailChanging(Email $email, string $token): void
+    {
+        if (!$this->getStatus()->isActive()) {
+            throw new UserNotActiveException('Аккаунт не активен.');
+        }
+
+        if ($this->email && $this->email->isEqual($email)) {
+            throw new UserAlreadySameEmail('Электронная почта уже привязана к акканту.');
+        }
+
+        $this->newEmail = $email;
+        $this->newEmailToken = $token;
+    }
+
+    /**
+     * Подтверждение смены электронной почты.
+     *
+     * @param string $token
+     */
+    public function confirmEmailChanging(string $token): void
+    {
+        if (!$this->getNewEmail()) {
+            throw new UserEmailChangingNotRequested('Смена электронной почты не была запрошена.');
+        }
+
+        if ($this->getNewEmailToken() !== $token) {
+            throw new UserInvalidNewEmailToken('Неверный токен смены электронной почты.');
+        }
+
+        $this->email = $this->newEmail;
+        $this->newEmail = null;
+        $this->newEmailToken = null;
+    }
+
+    /**
      * Отправка запроса на восстановление пароля.
      *
      * @param ResetToken $token
@@ -243,6 +301,16 @@ class User
     public function getResetToken(): ?ResetToken
     {
         return $this->resetToken;
+    }
+
+    public function getNewEmail(): ?Email
+    {
+        return $this->newEmail;
+    }
+
+    public function getNewEmailToken(): ?string
+    {
+        return $this->newEmailToken;
     }
 
     public function getStatus(): Status

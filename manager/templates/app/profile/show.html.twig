@@ -18,6 +18,15 @@
             <table class="table table-bordered mb-0">
                 <tbody>
                     <tr>
+                        <th>Электронная почта</th>
+                        <td>
+                            {{ user.email }}
+                            <a href="{{ path('profile.email') }}" class="btn btn-sm btn-outline-primary">
+                                <span class="fa fa-pencil"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Идентификатор</th>
                         <td>{{ user.id }}</td>
                     </tr>
@@ -25,12 +34,6 @@
                         <th>Дата регистрации</th>
                         <td>{{ user.date }}</td>
                     </tr>
-                    {% if (user.email) %}
-                        <tr>
-                            <th>Электронная почта</th>
-                            <td>{{ user.email }}</td>
-                        </tr>
-                    {% endif %}
                     <tr>
                         <th>Роль</th>
                         <td>{{ user_role(user.role) }}</td>
