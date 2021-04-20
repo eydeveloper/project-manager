@@ -74,7 +74,6 @@ class UserIdentity implements UserInterface, EquatableInterface
 
         return
             $this->id === $user->id &&
-            $this->username === $user->username &&
             $this->password === $user->password &&
             $this->status === $user->status &&
             $this->role === $user->role;

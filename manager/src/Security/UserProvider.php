@@ -47,6 +47,7 @@ class UserProvider implements UserProviderInterface
     /**
      * @param string $username
      * @return AuthView
+     * @throws \Doctrine\DBAL\Exception
      */
     public function loadUser(string $username): AuthView
     {
@@ -63,12 +64,11 @@ class UserProvider implements UserProviderInterface
         return throw new UsernameNotFoundException('');
     }
 
-    #[Pure]
-    public static function identityByUser(AuthView $user, string $username): UserIdentity
+    #[Pure] public static function identityByUser(AuthView $user, string $username): UserIdentity
     {
         return new UserIdentity(
             $user->id,
-            $username,
+            $user->email ?: $username,
             $user->password_hash ?: '',
             $user->status,
             $user->role
