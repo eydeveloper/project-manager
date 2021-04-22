@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/oauth/facebook')]
 class FacebookController extends AbstractController
 {
     /**
@@ -17,7 +18,7 @@ class FacebookController extends AbstractController
      * @param ClientRegistry $clientRegistry
      * @return RedirectResponse
      */
-    #[Route('/oauth/facebook', name: 'oauth.facebook')]
+    #[Route(name: 'oauth.facebook')]
     public function connect(ClientRegistry $clientRegistry): RedirectResponse
     {
         return $clientRegistry
@@ -30,7 +31,7 @@ class FacebookController extends AbstractController
      *
      * @return RedirectResponse
      */
-    #[Route('/oauth/facebook/check', name: 'oauth.facebook_check')]
+    #[Route('/check', name: 'oauth.facebook_check')]
     public function check(): RedirectResponse
     {
         return $this->redirectToRoute('home');

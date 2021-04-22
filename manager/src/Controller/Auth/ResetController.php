@@ -6,6 +6,7 @@ namespace App\Controller\Auth;
 
 use App\Model\User\UseCase\Reset;
 use App\ReadModel\User\UserFetcher;
+use DomainException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/reset')]
 class ResetController extends AbstractController
 {
     private LoggerInterface $logger;
@@ -29,7 +31,7 @@ class ResetController extends AbstractController
      * @param Reset\Request\Handler $handler
      * @return RedirectResponse|Response
      */
-    #[Route('/reset', name: 'auth.reset')]
+    #[Route(name: 'auth.reset')]
     public function request(Request $request, Reset\Request\Handler $handler): RedirectResponse|Response
     {
         $command = new Reset\Request\Command();
@@ -42,7 +44,7 @@ class ResetController extends AbstractController
                 $handler->handle($command);
                 $this->addFlash('success', 'Check your email.');
                 return $this->redirectToRoute('home');
-            } catch (\DomainException $exception) {
+            } catch (DomainException $exception) {
                 $this->addFlash('error', $exception->getMessage());
                 $this->logger->error($exception->getMessage(), ['exception' => $exception]);
             }
@@ -63,7 +65,7 @@ class ResetController extends AbstractController
      * @return RedirectResponse|Response
      * @throws \Doctrine\DBAL\Exception
      */
-    #[Route('/reset/{token}', name: 'auth.reset.reset')]
+    #[Route('/{token}', name: 'auth.reset.reset')]
     public function reset(string $token, Request $request, Reset\Reset\Handler $handler, UserFetcher $users): RedirectResponse|Response
     {
         if (!$users->existsByResetToken($token)) {
@@ -81,7 +83,7 @@ class ResetController extends AbstractController
                 $handler->handle($command);
                 $this->addFlash('success', 'Password if successfully changed.');
                 return $this->redirectToRoute('home');
-            } catch (\DomainException $exception) {
+            } catch (DomainException $exception) {
                 $this->addFlash('error', $exception->getMessage());
                 $this->logger->error($exception->getMessage(), ['exception' => $exception]);
             }

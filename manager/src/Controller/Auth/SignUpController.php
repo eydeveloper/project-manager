@@ -7,6 +7,7 @@ namespace App\Controller\Auth;
 use App\Model\User\UseCase\SignUp;
 use App\ReadModel\User\UserFetcher;
 use App\Security\LoginFormAuthenticator;
+use DomainException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,6 +18,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('/signup')]
 class SignUpController extends AbstractController
 {
     private LoggerInterface $logger;
@@ -37,7 +39,7 @@ class SignUpController extends AbstractController
      * @param SignUp\Request\Handler $handler
      * @return RedirectResponse|Response
      */
-    #[Route('/signup', name: 'auth.signup')]
+    #[Route(name: 'auth.signup')]
     public function request(Request $request, SignUp\Request\Handler $handler): RedirectResponse|Response
     {
         $command = new SignUp\Request\Command();
@@ -50,7 +52,7 @@ class SignUpController extends AbstractController
                 $handler->handle($command);
                 $this->addFlash('success', 'Check your email.');
                 return $this->redirectToRoute('home');
-            } catch (\DomainException $exception) {
+            } catch (DomainException $exception) {
                 $this->addFlash('error', $this->translator->trans($exception->getMessage(), domain: 'exceptions'));
                 $this->logger->error($exception->getMessage(), ['exception' => $exception]);
             }
@@ -71,8 +73,9 @@ class SignUpController extends AbstractController
      * @param UserProviderInterface $userProvider
      * @param LoginFormAuthenticator $authenticator
      * @return RedirectResponse|Response|null
+     * @throws \Doctrine\DBAL\Exception
      */
-    #[Route('/signup/{token}', name: 'auth.signup.confirm')]
+    #[Route('/{token}', name: 'auth.signup.confirm')]
     public function confirm(
         string $token,
         Request $request,
@@ -97,7 +100,7 @@ class SignUpController extends AbstractController
                 $authenticator,
                 'main'
             );
-        } catch (\DomainException $exception) {
+        } catch (DomainException $exception) {
             $this->addFlash('error', $this->translator->trans($exception->getMessage(), domain: 'exceptions'));
             $this->logger->error($exception->getMessage(), ['exception' => $exception]);
             return $this->redirectToRoute('auth.signup');

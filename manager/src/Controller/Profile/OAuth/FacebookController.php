@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Profile\OAuth;
 
-use App\Model\User\Exception\NotAuthorizedException;
 use App\Model\User\UseCase\Network\Attach\Command;
 use App\Model\User\UseCase\Network\Attach\Handler;
 use App\Security\UserIdentity;
+use DomainException;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,12 +48,11 @@ class FacebookController extends AbstractController
     #[Route('/check', name: 'profile.oauth.facebook_check')]
     public function check(ClientRegistry $clientRegistry, Handler $handler): RedirectResponse
     {
-        $client = $clientRegistry->getClient('facebook_attach');
-
-        /** @var UserIdentity $user */
-        if (!$user = $this->getUser()) {
-            throw new NotAuthorizedException();
+        if (!($user = $this->getUser()) || !($user instanceof UserIdentity)) {
+            return $this->redirectToRoute('app_login');
         }
+
+        $client = $clientRegistry->getClient('facebook_attach');
 
         $command = new Command(
             $user->getId(),
@@ -64,7 +63,7 @@ class FacebookController extends AbstractController
         try {
             $handler->handle($command);
             $this->addFlash('success', 'Facebook успешно привязан к аккаунту.');
-        } catch (\DomainException $exception) {
+        } catch (DomainException $exception) {
             $this->addFlash('error', $exception->getMessage());
             $this->logger->error($exception->getMessage(), ['exception' => $exception]);
         }

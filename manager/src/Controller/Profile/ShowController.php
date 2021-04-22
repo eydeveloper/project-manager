@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/profile')]
 class ShowController extends AbstractController
 {
     private UserFetcher $users;
@@ -23,8 +24,9 @@ class ShowController extends AbstractController
      * Страница профиля пользователя.
      *
      * @return Response
+     * @throws \Doctrine\DBAL\Exception
      */
-    #[Route('/profile', name: 'profile')]
+    #[Route(name: 'profile')]
     public function show(): Response
     {
         /** @var UserIdentity $identity */

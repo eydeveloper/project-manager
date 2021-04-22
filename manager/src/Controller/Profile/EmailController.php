@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Profile;
 
-use App\Model\User\Exception\NotAuthorizedException;
 use App\Model\User\UseCase\Email;
 use App\Security\UserIdentity;
+use DomainException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
@@ -29,12 +29,11 @@ class EmailController extends AbstractController
      * @param Email\Request\Handler $handler
      * @return RedirectResponse|Response
      */
-    #[Route('', name: 'profile.email')]
+    #[Route(name: 'profile.email')]
     public function request(Request $request, Email\Request\Handler $handler): RedirectResponse|Response
     {
-        /** @var UserIdentity $user */
-        if (!$user = $this->getUser()) {
-            throw new NotAuthorizedException();
+        if (!($user = $this->getUser()) || !($user instanceof UserIdentity)) {
+            return $this->redirectToRoute('app_login');
         }
 
         $command = new Email\Request\Command($user->getId());
@@ -47,7 +46,7 @@ class EmailController extends AbstractController
                 $handler->handle($command);
                 $this->addFlash('success', 'Письмо с подтверждением отправлено на вашу электронную почту.');
                 return $this->redirectToRoute('profile');
-            } catch (\DomainException $exception) {
+            } catch (DomainException $exception) {
                 $this->addFlash('error', $exception->getMessage());
                 $this->logger->error($exception->getMessage(), ['exception' => $exception]);
             }
@@ -68,9 +67,8 @@ class EmailController extends AbstractController
     #[Route('/{token}', name: 'profile.email.confirm')]
     public function confirm(string $token, Email\Confirm\Handler $handler): RedirectResponse
     {
-        /** @var UserIdentity $user */
-        if (!$user = $this->getUser()) {
-            throw new NotAuthorizedException();
+        if (!($user = $this->getUser()) || !($user instanceof UserIdentity)) {
+            return $this->redirectToRoute('app_login');
         }
 
         $command = new Email\Confirm\Command($user->getId(), $token);
@@ -78,7 +76,7 @@ class EmailController extends AbstractController
         try {
             $handler->handle($command);
             $this->addFlash('success', 'Электронная почта успешно изменена.');
-        } catch (\DomainException $exception) {
+        } catch (DomainException $exception) {
             $this->addFlash('error', $exception->getMessage());
             $this->logger->error($exception->getMessage(), ['exception' => $exception]);
         }
