@@ -21,15 +21,20 @@ class Handler
         $this->flusher = $flusher;
     }
 
+    /**
+     * Метод восстановления пароля.
+     *
+     * @param Command $command
+     */
     public function handle(Command $command): void
     {
-        if (!$user = $this->users->findByResetToken($command->token)) {
-            throw new \DomainException('Incorrect or confirmed token.');
+        if (!$user = $this->users->findByResetToken($command->getToken())) {
+            throw new \DomainException('Некорректный или уже подтвержденный токен.');
         }
 
         $user->passwordReset(
             new \DateTimeImmutable(),
-            $this->hasher->hash($command->password)
+            $this->hasher->hash($command->getPassword())
         );
 
         $this->flusher->flush();

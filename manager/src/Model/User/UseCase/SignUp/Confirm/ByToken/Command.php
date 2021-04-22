@@ -12,4 +12,9 @@ class Command
     {
         $this->token = $token;
     }
+
+    public function getToken(): string
+    {
+        return $this->token;
+    }
 }

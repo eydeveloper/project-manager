@@ -25,9 +25,14 @@ class Handler
         $this->flusher = $flusher;
     }
 
+    /**
+     * Метод отправки запроса на восстановление пароля.
+     *
+     * @param Command $command
+     */
     public function handle(Command $command): void
     {
-        $user = $this->users->getByEmail(new Email($command->email));
+        $user = $this->users->getByEmail(new Email($command->getEmail()));
 
         $user->requestPasswordReset(
             $this->tokenizer->generate(),

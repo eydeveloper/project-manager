@@ -10,4 +10,9 @@ class Command
 {
     #[Assert\NotBlank, Assert\Email]
     public string $email;
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 }

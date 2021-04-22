@@ -19,9 +19,14 @@ class Handler
         $this->flusher = $flusher;
     }
 
+    /**
+     * Метод подтверждения регистрации пользователя по идентификатору.
+     *
+     * @param Command $command
+     */
     public function handle(Command $command): void
     {
-        $user = $this->users->get(new Id($command->id));
+        $user = $this->users->get(new Id($command->getId()));
 
         $user->confirmSignUp();
 

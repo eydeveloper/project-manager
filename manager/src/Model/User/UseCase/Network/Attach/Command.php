@@ -16,4 +16,19 @@ class Command
         $this->network = $network;
         $this->identity = $identity;
     }
+
+    public function getUser(): string
+    {
+        return $this->user;
+    }
+
+    public function getNetwork(): string
+    {
+        return $this->network;
+    }
+
+    public function getIdentity(): string
+    {
+        return $this->identity;
+    }
 }

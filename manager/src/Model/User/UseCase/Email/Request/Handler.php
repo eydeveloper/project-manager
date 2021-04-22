@@ -11,6 +11,8 @@ use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\Exception\UserEmailAlreadyInUse;
 use App\Model\User\Service\NewEmailTokenizer;
 use App\Model\User\Service\NewEmailTokenSender;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 class Handler
 {
@@ -32,11 +34,17 @@ class Handler
         $this->flusher = $flusher;
     }
 
+    /**
+     * Метод отправки запроса на смену электронной почты пользователя.
+     *
+     * @param Command $command
+     * @throws NoResultException|NonUniqueResultException
+     */
     public function handle(Command $command): void
     {
-        $user = $this->users->get(new Id($command->id));
+        $user = $this->users->get(new Id($command->getId()));
 
-        $email = new Email($command->email);
+        $email = new Email($command->getEmail());
 
         if ($this->users->hasByEmail($email)) {
             throw new UserEmailAlreadyInUse('Указанная электронная почта привязана к другому аккаунту.');

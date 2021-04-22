@@ -18,4 +18,14 @@ class Command
     {
         $this->id = $id;
     }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
 }

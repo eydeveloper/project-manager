@@ -12,6 +12,8 @@ use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\Service\SignUpConfirmTokenSender;
 use App\Model\User\Service\PasswordHasher;
 use App\Model\User\Service\SignUpConfirmTokenizer;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 class Handler
 {
@@ -36,9 +38,15 @@ class Handler
         $this->flusher = $flusher;
     }
 
+    /**
+     * Метод отправки запроса на подтверждение регистрации.
+     *
+     * @param Command $command
+     * @throws NonUniqueResultException|NoResultException
+     */
     public function handle(Command $command): void
     {
-        $email = new Email($command->email);
+        $email = new Email($command->getEmail());
 
         if ($this->users->hasByEmail($email)) {
             throw new \DomainException('User already exists.');
@@ -48,7 +56,7 @@ class Handler
             Id::next(),
             new \DateTimeImmutable(),
             $email,
-            $this->passwordHasher->hash($command->password),
+            $this->passwordHasher->hash($command->getPassword()),
             $token = $this->tokenizer->generate()
         );
 

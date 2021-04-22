@@ -20,11 +20,16 @@ class Handler
         $this->flusher = $flusher;
     }
 
+    /**
+     * Метод смены роли пользователя.
+     *
+     * @param Command $command
+     */
     public function handle(Command $command): void
     {
-        $user = $this->users->get(new Id($command->id));
+        $user = $this->users->get(new Id($command->getId()));
 
-        $user->changeRole(new Role($command->role));
+        $user->changeRole(new Role($command->getRole()));
 
         $this->flusher->flush();
     }

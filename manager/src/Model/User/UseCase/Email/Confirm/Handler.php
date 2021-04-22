@@ -19,11 +19,16 @@ class Handler
         $this->flusher = $flusher;
     }
 
+    /**
+     * Метод подтверждения смены электронной почты пользователя.
+     *
+     * @param Command $command
+     */
     public function handle(Command $command): void
     {
-        $user = $this->users->get(new Id($command->id));
+        $user = $this->users->get(new Id($command->getId()));
 
-        $user->confirmEmailChanging($command->token);
+        $user->confirmEmailChanging($command->getToken());
 
         $this->flusher->flush();
     }

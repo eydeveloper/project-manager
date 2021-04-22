@@ -7,6 +7,8 @@ namespace App\Model\User\UseCase\Network\Attach;
 use App\Model\Flusher;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\UserRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 class Handler
 {
@@ -15,22 +17,28 @@ class Handler
 
     public function __construct(UserRepository $users, Flusher $flusher)
     {
-        $this->users =  $users;
-        $this->flusher =$flusher;
+        $this->users = $users;
+        $this->flusher = $flusher;
     }
 
+    /**
+     * Метод привязки социальной сети к аккаунту пользователя.
+     *
+     * @param Command $command
+     * @throws NonUniqueResultException|NoResultException
+     */
     public function handle(Command $command): void
     {
-        if ($this->users->hasByNetworkIdentity($command->network, $command->identity)) {
+        if ($this->users->hasByNetworkIdentity(
+            $network = $command->getNetwork(),
+            $identity = $command->getIdentity()
+        )) {
             throw new \DomainException('Социальная сеть уже привязана.');
         }
 
-        $user = $this->users->get(new Id($command->user));
+        $user = $this->users->get(new Id($command->getUser()));
 
-        $user->attachNetwork(
-            $command->network,
-            $command->identity
-        );
+        $user->attachNetwork($network, $identity);
 
         $this->flusher->flush();
     }

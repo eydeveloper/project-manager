@@ -18,4 +18,14 @@ class Command
     {
         $this->token = $token;
     }
+
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
 }

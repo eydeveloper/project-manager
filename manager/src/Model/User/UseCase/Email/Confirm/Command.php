@@ -14,4 +14,14 @@ class Command
         $this->id = $id;
         $this->token = $token;
     }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getToken(): string
+    {
+        return $this->token;
+    }
 }

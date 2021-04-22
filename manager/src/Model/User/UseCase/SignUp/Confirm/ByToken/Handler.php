@@ -18,10 +18,15 @@ class Handler
         $this->flusher = $flusher;
     }
 
+    /**
+     * Метод подтверждения регистрации пользователя по токену.
+     *
+     * @param Command $command
+     */
     public function handle(Command $command): void
     {
-        if (!$user = $this->users->findByConfirmToken($command->token)) {
-            throw new \DomainException('Incorrect or confirmed token.');
+        if (!$user = $this->users->findByConfirmToken($command->getToken())) {
+            throw new \DomainException('Некорректный или уже подтвержденный токен.');
         }
 
         $user->confirmSignUp();
