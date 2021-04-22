@@ -8,6 +8,11 @@ use Ramsey\Uuid\Uuid;
 
 class NewEmailTokenizer
 {
+    /**
+     * Метод генерирует и возвращает токен подтверждения смены электронной почты пользователя.
+     *
+     * @return string
+     */
     public function generate(): string
     {
         return Uuid::uuid4()->toString();

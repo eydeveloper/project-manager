@@ -16,6 +16,11 @@ class ResetTokenizer
         $this->interval = $interval;
     }
 
+    /**
+     * Метод генерирует и возвращает токен восстановления пароля.
+     *
+     * @return ResetToken
+     */
     public function generate(): ResetToken
     {
         return new ResetToken(

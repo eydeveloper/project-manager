@@ -10,7 +10,6 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
 
 class ResetTokenSender
 {
@@ -21,6 +20,12 @@ class ResetTokenSender
         $this->mailer = $mailer;
     }
 
+    /**
+     * Метод отправляет письмо восстановления пароля.
+     *
+     * @param Email $email
+     * @param ResetToken $token
+     */
     public function send(Email $email, ResetToken $token): void
     {
         $message = (new TemplatedEmail())
