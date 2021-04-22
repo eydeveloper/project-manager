@@ -20,11 +20,21 @@ class Id
         $this->value = $value;
     }
 
+    /**
+     * Метод возвращает новый уникальный идентификатор.
+     *
+     * @return Id
+     */
     public static function next(): Id
     {
         return new self(Uuid::uuid4()->toString());
     }
 
+    /**
+     * Метод возвращает идентификатор в виде строки.
+     *
+     * @return string
+     */
     public function getValue(): string
     {
         return $this->value;

@@ -9,9 +9,6 @@ use Webmozart\Assert\Assert;
 
 class Email
 {
-    /**
-     * @var string
-     */
     private string $value;
 
     public function __construct(string $value)
@@ -25,12 +22,24 @@ class Email
         $this->value = (string)mb_strtolower($value);
     }
 
+    /**
+     * Метод возвращает электронную почту в виде строки.
+     *
+     * @return string
+     */
     public function getValue(): string
     {
         return $this->value;
     }
 
-    #[Pure] public function isEqual(self $other): bool
+    /**
+     * Метод возвращает результат сравнения с другой электронной почтой.
+     *
+     * @param Email $other
+     * @return bool
+     */
+    #[Pure]
+    public function isEqual(self $other): bool
     {
         return $this->getValue() === $other->getValue();
     }

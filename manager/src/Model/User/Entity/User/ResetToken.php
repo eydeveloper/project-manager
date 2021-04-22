@@ -16,6 +16,7 @@ class ResetToken
      * @ORM\Column(type="string", nullable=true)
      */
     private string $token;
+
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */

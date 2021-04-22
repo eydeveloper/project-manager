@@ -20,15 +20,18 @@ class Network
      * @ORM\Id
      */
     private string $id;
+
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="networks")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private User $user;
+
     /**
      * @ORM\Column(type="string", length=32, nullable=true)
      */
     private string $network;
+
     /**
      * @ORM\Column(type="string", length=32, nullable=true)
      */

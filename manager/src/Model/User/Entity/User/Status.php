@@ -34,12 +34,14 @@ class Status
         return new self(self::ACTIVE);
     }
 
-    #[Pure] public function isWait(): bool
+    #[Pure]
+    public function isWait(): bool
     {
         return $this->getName() === self::WAIT;
     }
 
-    #[Pure] public function isActive(): bool
+    #[Pure]
+    public function isActive(): bool
     {
         return $this->getName() === self::ACTIVE;
     }

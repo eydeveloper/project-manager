@@ -13,9 +13,7 @@ class EmailType extends StringType
     public const NAME = 'user_user_email';
 
     /**
-     * @param mixed $value
-     * @param AbstractPlatform $platform
-     * @return string|null
+     * {@inheritdoc}
      */
     #[Pure]
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
@@ -24,9 +22,7 @@ class EmailType extends StringType
     }
 
     /**
-     * @param mixed $value
-     * @param AbstractPlatform $platform
-     * @return Email|null
+     * {@inheritdoc}
      */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?Email
     {
@@ -34,7 +30,7 @@ class EmailType extends StringType
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName(): string
     {
