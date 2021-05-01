@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\ReadModel\User;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Driver\Exception as DoctrineDriverException;
+use Doctrine\DBAL\Exception as DoctrineException;
 
 class UserFetcher
 {
@@ -21,7 +22,7 @@ class UserFetcher
      *
      * @param string $token
      * @return bool
-     * @throws Exception
+     * @throws DoctrineDriverException|DoctrineException
      */
     public function existsByResetToken(string $token): bool
     {
@@ -41,7 +42,7 @@ class UserFetcher
      *
      * @param string $email
      * @return AuthView|null
-     * @throws Exception
+     * @throws DoctrineDriverException|DoctrineException
      */
     public function findForAuthByEmail(string $email): ?AuthView
     {
@@ -72,7 +73,7 @@ class UserFetcher
      * @param string $network
      * @param string $identity
      * @return AuthView|null
-     * @throws Exception
+     * @throws DoctrineDriverException|DoctrineException
      */
     public function findForAuthByNetwork(string $network, string $identity): ?AuthView
     {
@@ -104,7 +105,7 @@ class UserFetcher
      *
      * @param string $email
      * @return ShortView|null
-     * @throws Exception
+     * @throws DoctrineDriverException|DoctrineException
      */
     public function findByEmail(string $email): ?ShortView
     {
@@ -132,10 +133,10 @@ class UserFetcher
      * Метод выполняет поиск пользователя по токену подтверждения регистрации.
      *
      * @param string $token
-     * @return mixed|null
-     * @throws Exception
+     * @return mixed
+     * @throws DoctrineDriverException|DoctrineException
      */
-    public function findBySignUpConfirmToken(string $token)
+    public function findBySignUpConfirmToken(string $token): mixed
     {
         $user = $this->connection->createQueryBuilder()
             ->select([
@@ -162,7 +163,7 @@ class UserFetcher
      *
      * @param string $id
      * @return DetailView|null
-     * @throws Exception
+     * @throws DoctrineDriverException|DoctrineException
      */
     public function findDetail(string $id): ?DetailView
     {

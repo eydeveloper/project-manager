@@ -6,6 +6,8 @@ namespace App\Security;
 
 use App\ReadModel\User\AuthView;
 use App\ReadModel\User\UserFetcher;
+use Doctrine\DBAL\Driver\Exception as DoctrineDriverException;
+use Doctrine\DBAL\Exception as DoctrineException;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -21,6 +23,10 @@ class UserProvider implements UserProviderInterface
         $this->users = $users;
     }
 
+    /**
+     * {@inheritdoc}
+     * @throws DoctrineException
+     */
     public function loadUserByUsername(string $username): UserIdentity
     {
         $user = $this->loadUser($username);
@@ -28,17 +34,25 @@ class UserProvider implements UserProviderInterface
         return self::identityByUser($user, $username);
     }
 
-    public function refreshUser(UserInterface $identity): UserInterface|UserIdentity
+    /**
+     * {@inheritdoc}
+     * @throws DoctrineException
+     */
+    public function refreshUser(UserInterface $user): UserInterface|UserIdentity
     {
-        if (!$identity instanceof UserIdentity) {
-            throw new UnsupportedUserException('Invalid user class ' . get_class($identity));
+        if (!$user instanceof UserIdentity) {
+            throw new UnsupportedUserException('Invalid user class ' . get_class($user));
         }
 
-        $user = $this->loadUser($identity->getUsername());
-
-        return self::identityByUser($user, $identity->getUsername());
+        return self::identityByUser(
+            $this->loadUser($user->getUsername()),
+            $user->getUsername()
+        );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsClass(string $class): bool
     {
         return $class === UserIdentity::class;
@@ -47,7 +61,8 @@ class UserProvider implements UserProviderInterface
     /**
      * @param string $username
      * @return AuthView
-     * @throws \Doctrine\DBAL\Exception
+     * @throws DoctrineException
+     * @throws DoctrineDriverException
      */
     public function loadUser(string $username): AuthView
     {

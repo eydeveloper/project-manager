@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Model\User\Service\PasswordHasher;
-use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,19 +26,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    private EntityManagerInterface $entityManager;
     private UrlGeneratorInterface $urlGenerator;
     private CsrfTokenManagerInterface $csrfTokenManager;
     private PasswordHasher $hasher;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         PasswordHasher $hasher
     )
     {
-        $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->hasher = $hasher;

@@ -63,7 +63,7 @@ class UserIdentity implements UserInterface, EquatableInterface
 
     public function eraseCredentials(): void
     {
-        // TODO: Implement eraseCredentials() method.
+        //
     }
 
     public function isEqualTo(UserInterface $user): bool

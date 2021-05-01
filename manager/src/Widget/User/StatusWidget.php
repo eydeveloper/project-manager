@@ -14,7 +14,7 @@ use Twig\TwigFunction;
 class StatusWidget extends AbstractExtension
 {
     /**
-     * @return TwigFunction[]
+     * {@inheritdoc}
      */
     public function getFunctions(): array
     {
