@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'app_home' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}{{ 'Home'|trans }}{% endblock %}
 
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item active">Home</li>
+        <li class="breadcrumb-item active">{{ 'Home'|trans }}</li>
     </ol>
 {% endblock %}
 

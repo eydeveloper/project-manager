@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Tests\Unit\Model\User\Entity\User\Reset;
 
 use App\Model\User\Entity\User\ResetToken;
@@ -12,10 +10,10 @@ class ResetTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = (new UserBuilder())->viaEmail()->confirmed()->build();
-
         $now = new \DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
+
+        $user = (new UserBuilder())->viaEmail()->confirmed()->build();
 
         $user->requestPasswordReset($token, $now);
 
@@ -29,10 +27,10 @@ class ResetTest extends TestCase
 
     public function testExpiredToken(): void
     {
-        $user = (new UserBuilder())->viaEmail()->confirmed()->build();
-
         $now = new \DateTimeImmutable();
         $token = new ResetToken('token', $now);
+
+        $user = (new UserBuilder())->viaEmail()->confirmed()->build();
 
         $user->requestPasswordReset($token, $now);
 
@@ -42,9 +40,9 @@ class ResetTest extends TestCase
 
     public function testNotRequested(): void
     {
-        $user = (new UserBuilder())->viaEmail()->confirmed()->build();
-
         $now = new \DateTimeImmutable();
+
+        $user = (new UserBuilder())->viaEmail()->confirmed()->build();
 
         $this->expectExceptionMessage('Resetting is not requested.');
         $user->passwordReset($now, 'hash');

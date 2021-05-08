@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Tests\Unit\Model\User\Entity\User\SignUp;
 
 use App\Tests\Builder\User\UserBuilder;
@@ -15,9 +13,8 @@ class ConfirmTest extends TestCase
 
         $user->confirmSignUp();
 
-        self::assertFalse($user->isWait());
-        self::assertTrue($user->isActive());
-
+        self::assertTrue($user->getStatus()->isActive());
+        self::assertFalse($user->getStatus()->isWait());
         self::assertNull($user->getConfirmToken());
     }
 
@@ -26,6 +23,7 @@ class ConfirmTest extends TestCase
         $user = (new UserBuilder())->viaEmail()->build();
 
         $user->confirmSignUp();
+
         $this->expectExceptionMessage('User is already confirmed.');
         $user->confirmSignUp();
     }

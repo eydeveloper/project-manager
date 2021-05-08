@@ -1,6 +1,7 @@
 {% extends 'auth.html.twig' %}
+{% trans_default_domain 'app_auth_reset_reset' %}
 
-{% block title %}Password Reset{% endblock %}
+{% block title %}{{ 'Password Reset'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -10,7 +11,7 @@
                     <div class="card-body p-4">
                         {% include '_flashes.html.twig' %}
 
-                        <h1>Password Reset</h1>
+                        <h1>{{ 'Password Reset'|trans }}</h1>
 
                         {{ form_start(form) }}
 
@@ -18,11 +19,11 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="icon-lock"></i></span>
                             </div>
-                            {{ form_widget(form.password, {'attr': {'placeholder': 'Password'}}) }}
+                            {{ form_widget(form.password, {'attr': {'placeholder': 'Password'|trans}}) }}
                             {{ form_errors(form.password) }}
                         </div>
 
-                        <button type="submit" class="btn btn-block btn-success">Set Password</button>
+                        <button type="submit" class="btn btn-block btn-success">{{ 'Set Password'|trans }}</button>
 
                         {{ form_end(form) }}
                     </div>

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Tests\Unit\Model\User\Entity\User;
 
 use App\Model\User\Entity\User\Role;
@@ -14,10 +12,12 @@ class RoleTest extends TestCase
     {
         $user = (new UserBuilder())->viaEmail()->build();
 
+        self::assertTrue($user->getRole()->isUser());
+
         $user->changeRole(Role::admin());
 
-        self::assertFalse($user->getRole()->isUser());
         self::assertTrue($user->getRole()->isAdmin());
+        self::assertFalse($user->getRole()->isUser());
     }
 
     public function testAlready(): void
@@ -25,7 +25,6 @@ class RoleTest extends TestCase
         $user = (new UserBuilder())->viaEmail()->build();
 
         $this->expectExceptionMessage('Role is already same.');
-
         $user->changeRole(Role::user());
     }
 }

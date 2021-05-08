@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Tests\Unit\Model\User\Entity\User\Email;
 
 use App\Model\User\Entity\User\Email;
+use App\Model\User\Exception\UserAlreadySameEmail;
+use App\Model\User\Exception\UserNotActiveException;
 use App\Tests\Builder\User\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -23,21 +23,22 @@ class RequestTest extends TestCase
         self::assertEquals($token, $user->getNewEmailToken());
     }
 
+    public function testNotActive(): void
+    {
+        $user = (new UserBuilder())->viaEmail()->build();
+
+        $this->expectException(UserNotActiveException::class);
+        $user->requestEmailChanging(new Email('new@app.test'), 'token');
+    }
+
     public function testSame(): void
     {
         $user = (new UserBuilder())
             ->viaEmail($email = new Email('new@app.test'))
-            ->confirmed()->build();
+            ->confirmed()
+            ->build();
 
-        $this->expectExceptionMessage('Email is already same.');
+        $this->expectException(UserAlreadySameEmail::class);
         $user->requestEmailChanging($email, 'token');
-    }
-
-    public function testNotConfirmed(): void
-    {
-        $user = (new UserBuilder())->viaEmail()->build();
-
-        $this->expectExceptionMessage('User is not active.');
-        $user->requestEmailChanging(new Email('new@app.test'), 'token');
     }
 }

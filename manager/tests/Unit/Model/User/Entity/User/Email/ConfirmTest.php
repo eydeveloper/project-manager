@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Tests\Unit\Model\User\Entity\User\Email;
 
 use App\Model\User\Entity\User\Email;
+use App\Model\User\Exception\UserEmailChangingNotRequested;
+use App\Model\User\Exception\UserInvalidNewEmailToken;
 use App\Tests\Builder\User\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -21,29 +21,29 @@ class ConfirmTest extends TestCase
 
         $user->confirmEmailChanging($token);
 
-        self::assertEquals($email, $user->getEmail());
-        self::assertNull($user->getNewEmailToken());
+        self::assertEquals($user->getEmail(), $email);
         self::assertNull($user->getNewEmail());
+        self::assertNull($user->getNewEmailToken());
     }
 
     public function testNotRequested(): void
     {
         $user = (new UserBuilder())->viaEmail()->confirmed()->build();
 
-        $this->expectExceptionMessage('Changing is not requested.');
+        $this->expectException(UserEmailChangingNotRequested::class);
         $user->confirmEmailChanging('token');
     }
 
-    public function testIncorrect(): void
+    public function testInvalidToken(): void
     {
         $user = (new UserBuilder())->viaEmail()->confirmed()->build();
 
         $user->requestEmailChanging(
-            $email = new Email('new@app.test'),
+            new Email('new@app.test'),
             'token'
         );
 
-        $this->expectExceptionMessage('Incorrect changing token.');
-        $user->confirmEmailChanging('incorrect-token');
+        $this->expectException(UserInvalidNewEmailToken::class);
+        $user->confirmEmailChanging('invalid');
     }
 }

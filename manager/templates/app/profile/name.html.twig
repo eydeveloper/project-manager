@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'app_profile_name' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}{{ 'Profile'|trans }}{% endblock %}
 
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('profile') }}">Profile</a></li>
-        <li class="breadcrumb-item active">Name</li>
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ 'Home'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('profile') }}">{{ 'Profile'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ 'Name'|trans }}</li>
     </ol>
 {% endblock %}
 
@@ -16,7 +17,7 @@
         <div class="card-body">
             {{ form_start(form) }}
             {{ form_widget(form) }}
-            <button type="submit" class="btn btn-success">Set Name</button>
+            <button type="submit" class="btn btn-success">{{ 'Set Name'|trans }}</button>
             {{ form_end(form) }}
         </div>
     </div>
