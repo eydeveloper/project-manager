@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Groups{% endblock %}
+{% trans_default_domain 'app_work_members' %}
+
+{% block title %}{{ 'Groups'|trans }}{% endblock %}
 
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('work') }}">Work</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('work.members') }}">Members</a></li>
-        <li class="breadcrumb-item active">Groups</li>
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ 'Home'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('work') }}">{{ 'Work'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('work.members') }}">{{ 'Members'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ 'Groups'|trans }}</li>
     </ol>
 {% endblock %}
 
@@ -16,15 +18,15 @@
     {{ include('app/work/members/groups/_tabs.html.twig') }}
 
     <div class="controls">
-        <a href="{{ path('work.members.groups.create') }}" class="btn btn-success">Add Group</a>
+        <a href="{{ path('work.members.groups.create') }}" class="btn btn-success">{{ 'Add Group'|trans }}</a>
     </div>
 
     <div class="box">
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Members</th>
+                    <th>{{ 'Name'|trans }}</th>
+                    <th>{{ 'Members'|trans }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -43,7 +45,7 @@
                         <td>
                             <div class="d-flex flex-row">
                                 <a href="{{ path('work.members.groups.edit', {'id': group.id}) }}" class="btn btn-sm btn-primary mr-1"><span class="fa fa-pencil"></span></a>
-                                <form action="{{ path('work.members.groups.delete', {'id': group.id}) }}" method="post" onsubmit="return confirm('Are you sure?')">
+                                <form action="{{ path('work.members.groups.delete', {'id': group.id}) }}" method="post" onsubmit="return confirm('{{ 'Are you sure?'|trans }}')">
                                     <input type="hidden" name="token" value="{{ token }}" />
                                     <button type="submit" class="btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>
                                 </form>

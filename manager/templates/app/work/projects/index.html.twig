@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Projects{% endblock %}
+{% trans_default_domain 'app_work_projects' %}
+
+{% block title %}{{ 'Projects'|trans }}{% endblock %}
 
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('work') }}">Work</a></li>
-        <li class="breadcrumb-item active">Projects</li>
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ 'Home'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('work') }}">{{ 'Work'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ 'Projects'|trans }}</li>
     </ol>
 {% endblock %}
 
@@ -15,7 +17,7 @@
     {{ include('app/work/_tabs.html.twig') }}
 
     <div class="controls">
-        <a href="{{ path('work.projects.create') }}" class="btn btn-success">Add Project</a>
+        <a href="{{ path('work.projects.create') }}" class="btn btn-success">{{ 'Add Project'|trans }}</a>
     </div>
 
     <div class="card">
@@ -26,8 +28,8 @@
                 <div class="col-md-2">{{ form_widget(form.name) }}</div>
                 <div class="col-md-2">{{ form_widget(form.status) }}</div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="{{ path('work.projects') }}" class="btn btn-outline-secondary">Reset</a>
+                    <button type="submit" class="btn btn-primary">{{ 'Filter'|trans }}</button>
+                    <a href="{{ path('work.projects') }}" class="btn btn-outline-secondary">{{ 'Reset'|trans }}</a>
                 </div>
             </div>
             {{ form_end(form) }}
@@ -39,8 +41,8 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'Name', 'name') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Status', 'status') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Name'|trans, 'name') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Status'|trans, 'status') }}</th>
             </tr>
             </thead>
             <tbody>

@@ -1,8 +1,10 @@
+{% trans_default_domain 'app_work_members' %}
+
 <ul class="nav nav-tabs mb-4">
     <li class="nav-item">
-        <a class="nav-link active" href="{{ path('work.members') }}">Members</a>
+        <a class="nav-link active" href="{{ path('work.members') }}">{{ 'Members'|trans }}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ path('work.members.groups') }}">Groups</a>
+        <a class="nav-link" href="{{ path('work.members.groups') }}">{{ 'Groups'|trans }}</a>
     </li>
 </ul>

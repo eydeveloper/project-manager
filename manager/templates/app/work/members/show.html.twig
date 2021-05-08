@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Members{% endblock %}
+{% trans_default_domain 'app_work_members' %}
+
+{% block title %}{{ 'Members'|trans }}{% endblock %}
 
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('work') }}">Work</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('work.members') }}">Members</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ 'Home'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('work') }}">{{ 'Work'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('work.members') }}">{{ 'Members'|trans }}</a></li>
         <li class="breadcrumb-item active">{{ member.name.full }}</li>
     </ol>
 {% endblock %}
@@ -16,19 +18,19 @@
     {{ include('app/work/members/_tabs.html.twig') }}
 
     <div class="controls">
-        <a href="{{ path('work.members.edit', {'id': member.id}) }}" class="btn btn-primary">Edit</a>
-        <a href="{{ path('work.members.move', {'id': member.id}) }}" class="btn btn-primary">Move</a>
-        <a href="{{ path('users.show', {'id': member.id}) }}" class="btn btn-primary">View User</a>
+        <a href="{{ path('work.members.edit', {'id': member.id}) }}" class="btn btn-primary">{{ 'Edit'|trans }}</a>
+        <a href="{{ path('work.members.move', {'id': member.id}) }}" class="btn btn-primary">{{ 'Move'|trans }}</a>
+        <a href="{{ path('users.show', {'id': member.id}) }}" class="btn btn-primary">{{ 'View User'|trans }}</a>
         {% if member.active and member.id.value != app.user.id %}
-            <form action="{{ path('work.members.archive', {'id': member.id}) }}" method="post" onsubmit="return confirm('Are you sure?')">
+            <form action="{{ path('work.members.archive', {'id': member.id}) }}" method="post" onsubmit="return confirm('{{ 'Are you sure?'|trans }}')">
                 <input type="hidden" name="token" value="{{ csrf_token('archive') }}" />
-                <button type="submit" class="btn btn-danger">Archive</button>
+                <button type="submit" class="btn btn-danger">{{ 'Archive'|trans }}</button>
             </form>
         {% endif %}
         {% if member.archived %}
-            <form action="{{ path('work.members.reinstate', {'id': member.id}) }}" method="post" onsubmit="return confirm('Are you sure?')">
+            <form action="{{ path('work.members.reinstate', {'id': member.id}) }}" method="post" onsubmit="return confirm('{{ 'Are you sure?'|trans }}')">
                 <input type="hidden" name="token" value="{{ csrf_token('reinstate') }}" />
-                <button type="submit" class="btn btn-success">Reinstate</button>
+                <button type="submit" class="btn btn-success">{{ 'Reinstate'|trans }}</button>
             </form>
         {% endif %}
     </div>
@@ -37,19 +39,19 @@
         <table class="table table-bordered">
             <tbody>
                 <tr>
-                    <th>Name</th>
+                    <th>{{ 'Name'|trans }}</th>
                     <td>{{ member.name.full }}</td>
                 </tr>
                 <tr>
-                    <th>Email</th>
+                    <th>{{ 'Email'|trans }}</th>
                     <td>{{ member.email.value }}</td>
                 </tr>
                 <tr>
-                    <th>Group</th>
+                    <th>{{ 'Group'|trans }}</th>
                     <td>{{ member.group.name }}</td>
                 </tr>
                 <tr>
-                    <th>Status</th>
+                    <th>{{ 'Status'|trans }}</th>
                     <td>{{ member_status(member.status.name) }}</td>
                 </tr>
             </tbody>
@@ -61,8 +63,8 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Project</th>
-                        <th>Department</th>
+                        <th>{{ 'Project'|trans }}</th>
+                        <th>{{ 'Department'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -123,7 +123,7 @@ services:
         volumes:
             - ./centrifugo/docker/development/centrifugo:/centrifugo
         ports:
-            - "83:8000"
+            - "8083:8000"
         command: centrifugo --admin --admin_insecure
 
 volumes:

@@ -1,7 +1,9 @@
+{% trans_default_domain 'widget_user' %}
+
 {% if status == 'wait' %}
-    <span class="badge badge-secondary">Wait</span>
+    <span class="badge badge-secondary">{{ 'Wait'|trans }}</span>
 {% elseif status == 'active' %}
-    <span class="badge badge-primary">Active</span>
+    <span class="badge badge-primary">{{ 'Active'|trans }}</span>
 {% elseif status == 'blocked' %}
-    <span class="badge badge-danger">Block</span>
+    <span class="badge badge-danger">{{ 'Block'|trans }}</span>
 {% endif %}

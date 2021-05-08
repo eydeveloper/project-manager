@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'Sign Up' => 'Регистрация',
     'Create your account' => 'Создайте Ваш аккаунт',

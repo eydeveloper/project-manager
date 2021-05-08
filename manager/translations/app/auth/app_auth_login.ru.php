@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'Log In' => 'Вход',
     'Sign In to your account' => 'Войдите в Ваш аккаунт',

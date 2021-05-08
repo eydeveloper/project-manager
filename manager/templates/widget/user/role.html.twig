@@ -1,5 +1,7 @@
+{% trans_default_domain 'widget_user' %}
+
 {% if role == 'ROLE_USER' %}
-    <span class="badge badge-secondary">User</span>
+    <span class="badge badge-secondary">{{ 'User'|trans }}</span>
 {% elseif role == 'ROLE_ADMIN' %}
-    <span class="badge badge-success">Admin</span>
+    <span class="badge badge-success">{{ 'Admin'|trans }}</span>
 {% endif %}

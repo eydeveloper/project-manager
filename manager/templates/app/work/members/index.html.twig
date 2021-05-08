@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Members{% endblock %}
+{% trans_default_domain 'app_work_members' %}
+
+{% block title %}{{ 'Members'|trans }}{% endblock %}
 
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('work') }}">Work</a></li>
-        <li class="breadcrumb-item active">Members</li>
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ 'Home'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('work') }}">{{ 'Work'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ 'Members'|trans }}</li>
     </ol>
 {% endblock %}
 
@@ -24,8 +26,8 @@
                 <div class="col-md-2">{{ form_widget(form.group) }}</div>
                 <div class="col-md-2">{{ form_widget(form.status) }}</div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="{{ path('work.members') }}" class="btn btn-outline-secondary">Reset</a>
+                    <button type="submit" class="btn btn-primary">{{ 'Filter'|trans }}</button>
+                    <a href="{{ path('work.members') }}" class="btn btn-outline-secondary">{{ 'Reset'|trans }}</a>
                 </div>
             </div>
             {{ form_end(form) }}
@@ -37,11 +39,11 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'Name', 'name') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Email', 'email') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Group', 'group') }}</th>
-                <th>Projects</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Status', 'status') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Name'|trans, 'name') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Email'|trans, 'email') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Group'|trans, 'group') }}</th>
+                <th>{{ 'Projects'|trans }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Status'|trans, 'status') }}</th>
             </tr>
             </thead>
             <tbody>

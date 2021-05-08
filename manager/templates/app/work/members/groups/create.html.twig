@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Groups{% endblock %}
+{% trans_default_domain 'app_work_members' %}
+
+{% block title %}{{ 'Groups'|trans }}{% endblock %}
 
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('work') }}">Work</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('work.members') }}">Members</a></li>
-        <li class="breadcrumb-item"><a href="{{ path('work.members.groups') }}">Groups</a></li>
-        <li class="breadcrumb-item active">Create</li>
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">{{ 'Home'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('work') }}">{{ 'Work'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('work.members') }}">{{ 'Members'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('work.members.groups') }}">{{ 'Groups'|trans }}</a></li>
+        <li class="breadcrumb-item active">{{ 'Create'|trans }}</li>
     </ol>
 {% endblock %}
 
@@ -21,7 +23,7 @@
 
             {{ form_start(form) }}
             {{ form_widget(form) }}
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">{{ 'Create'|trans }}</button>
             {{ form_end(form) }}
 
         </div>
